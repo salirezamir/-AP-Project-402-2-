@@ -27,7 +27,16 @@ namespace Restaurant_Manager
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _context.Database.EnsureCreated();
+                _context.Database.EnsureCreated();
+            /*
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            */
             MessageBox.Show("Database created");
         }
     }

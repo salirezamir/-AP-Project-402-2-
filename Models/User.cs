@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    internal class Users
+    internal class User
     {
         public enum Types
         {
@@ -34,8 +34,7 @@ namespace Restaurant_Manager.Models
         public string Password { get; set; }
         [Required]
         public Types Type { get; set; }
-        [Required]
-        public Tiers Tier { get; set; }
+        public Tiers? Tier { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
@@ -44,8 +43,9 @@ namespace Restaurant_Manager.Models
         public string Address { get; set; }
         [Required]
         public string Name { get; set; }
-        public long Zipcode { get; set; }
-        public Genders Gender { get; set; }
+        public long? Zipcode { get; set; }
+        public Genders? Gender { get; set; }
+        public virtual Restaurant? Restaurant { get; set; }
 
     }
 }

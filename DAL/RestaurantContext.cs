@@ -11,7 +11,13 @@ namespace Restaurant_Manager.DAL
 {
     internal class RestaurantContext : DbContext
     {
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<Stuff> Stuffs { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
