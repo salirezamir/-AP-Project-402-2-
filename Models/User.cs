@@ -39,8 +39,7 @@ namespace Restaurant_Manager.Models
         public string Email { get; set; }
         [Required]
         public string Phone { get; set; }
-        [Required]
-        public string Address { get; set; }
+        public string? Address { get; set; }
         [Required]
         public string Name { get; set; }
         public long? Zipcode { get; set; }
