@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    internal class Restaurant
+    public class Restaurant
     {
         [Key,Required]
         public int Id { get; set; }

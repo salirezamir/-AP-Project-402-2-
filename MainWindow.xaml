@@ -12,7 +12,7 @@
     <Grid>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="SignIn" >
-                <Grid Background="#FFE5E5E5" >
+                <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
                         <RowDefinition Height="75"/>
@@ -29,7 +29,6 @@
                         x:Name="usernameInTx"
                         Height="50"
                         materialDesign:HintAssist.Hint="UserName"
-                        AcceptsReturn="True"
                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                         Style="{StaticResource MaterialDesignFilledTextBox}"
                     />
@@ -53,7 +52,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="SignUp">
-                <Grid Background="#FFE5E5E5">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="60"/>
@@ -100,7 +99,15 @@
                             materialDesign:HintAssist.Hint="Name"
                             AcceptsReturn="True"
                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                            Style="{StaticResource MaterialDesignFilledTextBox}" />
+                            Style="{StaticResource MaterialDesignFilledTextBox}" >
+                            <TextBox.Text>
+                                <Binding Path="Name" UpdateSourceTrigger="LostFocus">
+                                    <Binding.ValidationRules>
+                                        <valid:NameValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -131,8 +138,7 @@
                         materialDesign:HintAssist.Hint="Email"
                         AcceptsReturn="True"
                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                        Style="{StaticResource MaterialDesignFilledTextBox}"
-                    >
+                        Style="{StaticResource MaterialDesignFilledTextBox}" >
                         <TextBox.Text>
                             <Binding Path="EmailID" UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>

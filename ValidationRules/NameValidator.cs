@@ -9,19 +9,19 @@ using System.Windows.Controls;
 
 namespace Restaurant_Manager.ValidationRules
 {
-    public class EmailValidator : ValidationRule
+    public class NameValidator : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (value is string email)
+            if (value is string name)
             {
-                string emailPattern = @"^[a-zA-Z]{3,32}@[a-zA-Z]{3,32}\.[a-zA-Z]{2,3}$";
-                if (Regex.IsMatch(email, emailPattern))
+                string namePattern = @"^[a-zA-Z ]{3,32}$";
+                if (Regex.IsMatch(name, namePattern))
                 {
                     return ValidationResult.ValidResult;
                 }
             }
-            return new ValidationResult(false, $"Invalid email format");
+            return new ValidationResult(false, $"Invalid name format");
         }
     }
 }
