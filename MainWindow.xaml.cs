@@ -32,6 +32,7 @@ namespace Restaurant_Manager
                 OnPropertyChange(nameof(_emailID));
             }
         }
+
         private string _name;
         public string Name
         {
@@ -42,6 +43,7 @@ namespace Restaurant_Manager
                 OnPropertyChange(nameof(_name));
             }
         }
+
         private string _number;
         public string Number
         {
@@ -136,7 +138,7 @@ namespace Restaurant_Manager
                     adminWindow.Show();
                     this.Close();
                 }
-                // do Data Pass
+
             }
             else
             {
