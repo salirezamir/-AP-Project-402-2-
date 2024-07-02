@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    internal class Stuff
+    public class Stuff
     {
         public enum SType
         {
