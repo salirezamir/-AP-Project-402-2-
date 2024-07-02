@@ -138,6 +138,11 @@ namespace Restaurant_Manager
                     adminWindow.Show();
                     this.Close();
                 }
+                if (user.Type == User.Types.Restaurant)
+                {
+                    Restaurant restaurant = _context.Users.Where(x => x.Id == user.Id).Select(x => x.Restaurant).FirstOrDefault();
+                    MessageBox.Show("Welcome {0}",restaurant.City);
+                }
 
             }
             else
