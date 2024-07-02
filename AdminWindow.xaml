@@ -43,6 +43,7 @@
                             Text="Filter By :" VerticalAlignment="Center" 
                             TextAlignment="Right" FontSize="23"/>
                 <ComboBox Grid.Row="2" Grid.Column="5"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Filter Type"
                             x:Name="FilterRsCb" Height="50">
                     <ComboBoxItem Content="Name"/>
@@ -99,6 +100,7 @@
                     Text="Filter By :" VerticalAlignment="Center" 
                     TextAlignment="Right" FontSize="23"/>
                 <ComboBox Grid.Row="2" Grid.Column="5"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Filter Type"
                           x:Name="FilterCpCb" Height="50">
                     <ComboBoxItem Content="Username"/>
@@ -186,6 +188,7 @@
                                 Style="{StaticResource MaterialDesignFilledTextBox}"
                                 AcceptsReturn="True"/>
                 <ComboBox Grid.Row="7" Grid.Column="7" 
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Status"
                           x:Name="FilterCpAnCb" Height="50">
                     <ComboBoxItem Content="Pending"/>
@@ -288,13 +291,15 @@
                             materialDesign:HintAssist.Hint="Address"
                             VerticalAlignment="Center"
                             Style="{StaticResource MaterialDesignFilledTextBox}"/>
-                <ComboBox Grid.Row="5" Grid.Column="1" 
+                <ComboBox Grid.Row="5" Grid.Column="1"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Delivery"
                           x:Name="DeliveryRsCb" Height="50">
                     <ComboBoxItem Content="Yes"/>
                     <ComboBoxItem Content="No"/>
                 </ComboBox>
                 <ComboBox Grid.Row="5" Grid.Column="3" 
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Dine-In"
                           x:Name="DineRsCb" Height="50">
                     <ComboBoxItem Content="Yes"/>
