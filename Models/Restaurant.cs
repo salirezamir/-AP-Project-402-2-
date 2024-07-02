@@ -16,7 +16,7 @@ namespace Restaurant_Manager.Models
         [Required]
         public string City { get; set; }
         [Required]
-        public string Adress { get; set; }
+        public string Address { get; set; }
         [Required]
         public bool Delivery { get; set; }
         [Required]
