@@ -10,7 +10,7 @@
         Title="AdminWindow" Height="500" Width="800">
     <TabControl>
         <TabItem Header="Welcome" >
-            
+
         </TabItem>
         <TabItem Header="Search">
             <TabControl>
@@ -45,7 +45,7 @@
                                    Text="Filter By :" VerticalAlignment="Center" 
                                    TextAlignment="Right" FontSize="23"/>
                         <ComboBox Grid.Row="2" Grid.Column="5"
-                                  x:Name="FilterCb" Height="50">
+                                  x:Name="FilterRsCb" Height="50">
                             <ComboBoxItem Content="Name"/>
                             <ComboBoxItem Content="City"/>
                             <ComboBoxItem Content="Rating"/>
@@ -54,13 +54,13 @@
                         <TextBox
                             Grid.Row="3" Grid.Column="5"
                             VerticalAlignment="Center"
-                            x:Name="FilterTx"
+                            x:Name="FilterRsTx"
                             materialDesign:HintAssist.Hint="Contains?"
                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                             Style="{StaticResource MaterialDesignFilledTextBox}"
                         />
                         <Button
-                            x:Name="FilterBtn"
+                            x:Name="FilterRsBtn"
                             Grid.Row="3" Grid.Column="3"
                             Content="Filter"
                             materialDesign:ButtonAssist.CornerRadius="10"
@@ -69,15 +69,141 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Complaints">
-
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="120"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="140"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid AutoGenerateColumns="False"
+                            x:Name="ComplaintDg" SelectionMode="Single"
+                                Grid.Row="1" Grid.RowSpan="4" Grid.Column="1">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Tittle" Binding="{Binding Tittle}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Resturant Name" Binding="{Binding RName}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Grid.Row="2" Grid.Column="3"
+                            Text="Filter By :" VerticalAlignment="Center" 
+                            TextAlignment="Right" FontSize="23"/>
+                        <ComboBox Grid.Row="2" Grid.Column="5"
+                                x:Name="FilterCpCb" Height="50">
+                            <ComboBoxItem Content="Username"/>
+                            <ComboBoxItem Content="Name"/>
+                            <ComboBoxItem Content="Tittle"/>
+                            <ComboBoxItem Content="Resturant"/>
+                            <ComboBoxItem Content="Status"/>
+                        </ComboBox>
+                        <TextBox
+                            Grid.Row="3" Grid.Column="5"
+                            VerticalAlignment="Center"
+                            x:Name="FilterCpTx"
+                            materialDesign:HintAssist.Hint="Contains?"
+                            IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                        />
+                        <Button
+                            x:Name="FilterCpBtn"
+                            Grid.Row="3" Grid.Column="3"
+                            Content="Filter"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        />
+                    </Grid>
                 </TabItem>
-                <TabItem Header="Answer Complaints">
-                    
+                <TabItem Header="Complaint Details / Answer">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="140"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Use Complaits Tab To Chose Complaint to Answer" VerticalAlignment="Center"
+                                   FontSize="23" HorizontalAlignment="Center" Visibility="Hidden"/>
+                        <TextBox x:Name="UserNameCpAnTx"
+                                 Grid.Row="1" Grid.Column="1"
+                                 materialDesign:HintAssist.Hint="UserName"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 IsReadOnly="True"/>
+                        <TextBox x:Name="NameCpAnTx"
+                                 Grid.Row="1" Grid.Column="3"
+                                 materialDesign:HintAssist.Hint="Name"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 IsReadOnly="True"/>
+                        <TextBox x:Name="ResNameCpAnTx"
+                                 Grid.Row="1" Grid.Column="5"
+                                 materialDesign:HintAssist.Hint="Resturant Name"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 IsReadOnly="True"/>
+                        <TextBox x:Name="DetailAnTx"
+                                 Grid.Row="3" Grid.Column="1"
+                                 Grid.ColumnSpan="5" Grid.RowSpan="3"
+                                 materialDesign:HintAssist.Hint="Details"
+                                 VerticalAlignment="Center"
+                                 TextWrapping="Wrap"
+                                 Height="260"
+                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 IsReadOnly="True"/>
+                        <TextBox x:Name="AnswerAnTx"
+                                 Grid.Row="1" Grid.Column="7"
+                                 Grid.ColumnSpan="3" Grid.RowSpan="3"
+                                 materialDesign:HintAssist.Hint="Answer"
+                                 VerticalAlignment="Center"
+                                 TextAlignment="Left"
+                                 TextWrapping="Wrap"
+                                 Height="260"
+                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 AcceptsReturn="True"/>
+                        <ComboBox Grid.Row="7" Grid.Column="7"
+                                  x:Name="FilterCpAnCb" Height="50">
+                            <ComboBoxItem Content="Pending"/>
+                            <ComboBoxItem Content="Answered"/>
+                        </ComboBox>
+                        <Button
+                            x:Name="AnswerCpAnBtn"
+                            Grid.Row="7" Grid.Column="9"
+                            Content="Answer"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        />
+                    </Grid>
+
                 </TabItem>
             </TabControl>
         </TabItem>
         <TabItem Header="Add Resturant">
-            
+
         </TabItem>
     </TabControl>
 </Window>
