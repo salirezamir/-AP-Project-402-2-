@@ -17,7 +17,7 @@ namespace Restaurant_Manager.ValidationRules
         {
             if (value is string number)
             {
-                string numberPattern = @"^[0-9]*$";
+                string numberPattern = @"^09\d{9}$";
                 if (Regex.IsMatch(number, numberPattern))
                 {
                     if (_context.Users.Any(u => u.Phone == number))
