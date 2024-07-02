@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    internal class Complaint
+    public class Complaint
     {
         public enum CStatus
         {
@@ -18,6 +18,8 @@ namespace Restaurant_Manager.Models
         public int Id { get; set; }
         [Required]
         public string Details { get; set; }
+        [Required]
+        public string Title { get; set; }
         public string? Answer { get; set; }
         [Required]
         public virtual User Users { get; set; }

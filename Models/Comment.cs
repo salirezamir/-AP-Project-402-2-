@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    internal class Comment
+    public class Comment
     {
         [Key, Required]
         public int Id { get; set; }

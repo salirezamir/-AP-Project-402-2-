@@ -32,6 +32,18 @@ namespace Restaurant_Manager
                 OnPropertyChange(nameof(_emailID));
             }
         }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChange(nameof(_name));
+            }
+        }
+
         private string _number;
         public string Number
         {
@@ -120,7 +132,13 @@ namespace Restaurant_Manager
             if (user != null)
             {
                 MessageBox.Show("Login Successful");
-                // do Data Pass
+                if (user.Type == User.Types.Admin)
+                {
+                    AdminWindow adminWindow = new AdminWindow(user);
+                    adminWindow.Show();
+                    this.Close();
+                }
+
             }
             else
             {
