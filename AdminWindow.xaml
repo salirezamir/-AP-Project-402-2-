@@ -6,13 +6,27 @@
         xmlns:local="clr-namespace:Restaurant_Manager"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:valid="clr-namespace:Restaurant_Manager.ValidationRules"
-        mc:Ignorable="d" Closing="Window_Closing"
+        mc:Ignorable="d" Closing="Window_Closing" ResizeMode="NoResize"
         Title="AdminWindow" Height="500" Width="800">
-    <TabControl HorizontalContentAlignment="Left" >
-        <TabItem Header="Welcome" HorizontalContentAlignment="Left" Width="140" HorizontalAlignment="Left">
-
+    <TabControl HorizontalContentAlignment="Left" x:Name="Tb"
+                SelectionChanged="TabControl_SelectionChanged" >
+        <TabItem Header="Welcome" HorizontalContentAlignment="Left"
+                  Width="140" HorizontalAlignment="Left">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="440"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="800"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           FontSize="35" x:Name="well"
+                           Text="Hello Admin" VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </Grid>
         </TabItem>
-        <TabItem Header="Returants" Width="140" HorizontalAlignment="Left">
+        <TabItem Header="Returants" x:Name="RestsTb"
+                 Width="140" HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"/>
@@ -35,7 +49,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="City" Binding="{Binding City}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Rating" Binding="{Binding rating}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Rating" Binding="{Binding Rate}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Complaint" Binding="{Binding Complaint}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -64,11 +78,12 @@
                     Grid.Row="3" Grid.Column="3"
                     Content="Filter"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="FilterRsBtn_Click"
                 />
             </Grid>
         </TabItem>
-        <TabItem Header="Complaints" Width="140" HorizontalAlignment="Left">
+        <TabItem Header="Complaints" x:Name="CompTb" 
+                 Width="140" HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"/>
@@ -76,6 +91,7 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="120"/>
+                    
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
@@ -86,12 +102,14 @@
                     <ColumnDefinition Width="140"/>
                 </Grid.ColumnDefinitions>
                 <DataGrid AutoGenerateColumns="False"
-                    x:Name="ComplaintDg" SelectionMode="Single"
-                        Grid.Row="1" Grid.RowSpan="4" Grid.Column="1">
+                          MouseDoubleClick="ComplaintDg_MouseDoubleClick"
+                          x:Name="ComplaintDg" SelectionMode="Single"
+                          Grid.Row="1" Grid.RowSpan="4" Grid.Column="1">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
+                        <DataGridTextColumn Width="50" Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="Username" Binding="{Binding Username}"  IsReadOnly="True"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Tittle" Binding="{Binding Tittle}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Resturant Name" Binding="{Binding RName}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
                     </DataGrid.Columns>
@@ -123,10 +141,12 @@
                     Content="Filter"
                     materialDesign:ButtonAssist.CornerRadius="10"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Click="FilterCpBtn_Click"
                 />
             </Grid>
         </TabItem>
-        <TabItem Header="Complaint Details/ Answer" Width="220" HorizontalAlignment="Left">
+        <TabItem Header="Complaint Details/ Answer" x:Name="AnTb"
+                 Width="220" HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"/>
@@ -134,6 +154,7 @@
                     <RowDefinition Height="15"/>
                     <RowDefinition Height="200"/>
                     <RowDefinition Height="15"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -148,8 +169,10 @@
                     <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="140"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Use Complaits Tab To Chose Complaint to Answer" VerticalAlignment="Center"
-                                FontSize="23" HorizontalAlignment="Center" Visibility="Hidden"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="9"
+                           Text="Use Complaits Tab To Chose Complaint (Double Click on table) to Answer"
+                           VerticalAlignment="Center" x:Name="ComAnHint"
+                           FontSize="23" HorizontalAlignment="Center"/>
                 <TextBox x:Name="UserNameCpAnTx"
                                 Grid.Row="1" Grid.Column="1"
                                 materialDesign:HintAssist.Hint="UserName"
@@ -187,7 +210,7 @@
                                 Height="260"
                                 Style="{StaticResource MaterialDesignFilledTextBox}"
                                 AcceptsReturn="True"/>
-                <ComboBox Grid.Row="7" Grid.Column="7" 
+                <ComboBox Grid.Row="5" Grid.Column="7" 
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Status"
                           x:Name="FilterCpAnCb" Height="50">
@@ -196,10 +219,13 @@
                 </ComboBox>
                 <Button
                         x:Name="AnswerCpAnBtn"
-                        Grid.Row="7" Grid.Column="9"
+                        Grid.Row="5" Grid.Column="9"
                         Content="Answer"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="AnswerCpAnBtn_Click"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Visibility="Hidden" Text="-1"
+                           x:Name="compAnId" HorizontalAlignment="Center"/>
             </Grid>
 
         </TabItem>
@@ -221,28 +247,28 @@
                     <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="140"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="NameRsTx"
-                            Grid.Row="3" Grid.Column="1"
-                            materialDesign:HintAssist.Hint="Name"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource MaterialDesignFilledTextBox}">
-                    <TextBox.Text>
-                        <Binding Path="Name" UpdateSourceTrigger="LostFocus">
-                            <Binding.ValidationRules>
-                                <valid:NameValidator/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
                 <TextBox x:Name="UsernameRsTx"
                             Grid.Row="1" Grid.Column="1"
                             materialDesign:HintAssist.Hint="Username"
                             VerticalAlignment="Center"
                             Style="{StaticResource MaterialDesignFilledTextBox}">
                     <TextBox.Text>
-                        <Binding Path="Username" UpdateSourceTrigger="LostFocus">
+                        <Binding Path="Router" UpdateSourceTrigger="LostFocus">
                             <Binding.ValidationRules>
                                 <valid:UsernameValidator/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBox x:Name="NameRsTx"
+                            Grid.Row="3" Grid.Column="1"
+                            materialDesign:HintAssist.Hint="Name"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="Router" UpdateSourceTrigger="LostFocus">
+                            <Binding.ValidationRules>
+                                <valid:NameValidator/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -253,7 +279,7 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource MaterialDesignFilledTextBox}">
                     <TextBox.Text>
-                        <Binding Path="City" UpdateSourceTrigger="LostFocus">
+                        <Binding Path="Router" UpdateSourceTrigger="LostFocus">
                             <Binding.ValidationRules>
                                 <valid:NameValidator/>
                             </Binding.ValidationRules>
@@ -266,7 +292,7 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource MaterialDesignFilledTextBox}">
                     <TextBox.Text>
-                        <Binding Path="Phone" UpdateSourceTrigger="LostFocus">
+                        <Binding Path="Router" UpdateSourceTrigger="LostFocus">
                             <Binding.ValidationRules>
                                 <valid:NumberValidator/>
                             </Binding.ValidationRules>
@@ -279,7 +305,7 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource MaterialDesignFilledTextBox}">
                     <TextBox.Text>
-                        <Binding Path="Email" UpdateSourceTrigger="LostFocus">
+                        <Binding Path="Router" UpdateSourceTrigger="LostFocus">
                             <Binding.ValidationRules>
                                 <valid:EmailValidator/>
                             </Binding.ValidationRules>
@@ -304,13 +330,20 @@
                           x:Name="DineRsCb" Height="50">
                     <ComboBoxItem Content="Yes"/>
                     <ComboBoxItem Content="No"/>
+                    <!--<ComboBox.SelectedItem>
+                        <Binding Mode="TwoWay" Path="Router" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <valid:NotEmptyValidator ValidationStep="UpdatedValue"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedItem>-->
                 </ComboBox>
                 <Button
                     x:Name="SinRsBtn"
                     Grid.Row="7" Grid.Column="9"
                     Content="Register"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="SinRsBtn_Click"/>
             </Grid>
         </TabItem>
     </TabControl>

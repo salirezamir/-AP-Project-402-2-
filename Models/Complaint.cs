@@ -24,7 +24,7 @@ namespace Restaurant_Manager.Models
         [Required]
         public virtual User User { get; set; }
         [Required]
-        public virtual Restaurant? Restaurant { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
         [Required]
         public CStatus Status { get; set; }
     }
