@@ -111,7 +111,6 @@ namespace Restaurant_Manager
             try
             {
                 _context.Database.EnsureCreated();
-
             }
             catch (System.Exception ex)
             {
