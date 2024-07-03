@@ -9,8 +9,6 @@ namespace Restaurant_Manager.Models
         [Required]
         public virtual User User { get; set; }
         [Required]
-        public virtual Restaurant Restaurant { get; set; }
-        [Required]
         public DateTime OrderDate { get; set; }
         [Required]
         public decimal TotalAmount { get; set; }
