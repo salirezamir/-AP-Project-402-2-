@@ -14,6 +14,8 @@
                     <TextBox x:Name="txtName" Margin="0,10" materialDesign:HintAssist.Hint="Name"/>
                     <TextBox x:Name="txtEmail" Margin="0,10" materialDesign:HintAssist.Hint="Email"/>
                     <TextBox x:Name="txtPhone" Margin="0,10" materialDesign:HintAssist.Hint="Phone"/>
+                    <TextBox x:Name="txtZipcode" Margin="0,10" materialDesign:HintAssist.Hint="Zip Code"/>
+                    <TextBox x:Name="txtGender" Margin="0,10" materialDesign:HintAssist.Hint="Gender"/>
                     <Button Content="Update" Click="UpdateProfile_Click"/>
                 </StackPanel>
             </TabItem>
