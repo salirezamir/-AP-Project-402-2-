@@ -17,8 +17,8 @@ namespace Restaurant_Manager.DAL
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
-
-
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Order_Stuffs> Order_Stuffs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
