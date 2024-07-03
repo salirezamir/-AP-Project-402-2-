@@ -36,13 +36,13 @@ namespace Restaurant_Manager
 
         private void LoadOrders()
         {
-            var orders = _context.Orders.Where(o => o.UserId == _currentUser.Id).ToList();
+            var orders = _context.Orders.Where(o => o.User.Id == _currentUser.Id).ToList();
             lstOrders.ItemsSource = orders;
         }
 
         private void LoadReviews()
         {
-            var reviews = _context.Reviews.Where(r => r.UserId == _currentUser.Id).ToList();
+            var reviews = _context.Complaints.Where(r => r.User.Id == _currentUser.Id).ToList();
             lstReviews.ItemsSource = reviews;
         }
 
