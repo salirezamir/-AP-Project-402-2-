@@ -154,8 +154,8 @@ namespace Restaurant_Manager
                     ComplaintDg.ItemsSource = _context.Complaints.Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.Users.Name,
-                        Username = x.Users.Username,
+                        Name = x.User.Name,
+                        Username = x.User.Username,
                         Title = x.Title,
                         RName = x.Restaurant.Name,
                         Status = x.Status.ToString()
@@ -181,17 +181,17 @@ namespace Restaurant_Manager
                         ComAnHint.Visibility = Visibility.Hidden;
                         var complaint = _context.Complaints.Where(x => x.Id == Id).Select(x => new
                         {
-                            x.Users.Username,
-                            x.Users.Name,
+                            x.User.Username,
+                            x.User.Name,
                             RName = x.Restaurant.Name,
-                            x.Details,
+                            x.Detail,
                             x.Answer,
                             x.Status
                         }).FirstOrDefault();
                         UserNameCpAnTx.Text = complaint.Username;
                         NameCpAnTx.Text = complaint.Name;
                         ResNameCpAnTx.Text = complaint.RName;
-                        DetailAnTx.Text = complaint.Details;
+                        DetailAnTx.Text = complaint.Detail;
                         AnswerAnTx.Text = complaint.Answer;
                         FilterCpAnCb.SelectedIndex = (int)complaint.Status;
                         reapeat = true;
@@ -298,12 +298,12 @@ namespace Restaurant_Manager
             {
                 
                 ComplaintDg.ItemsSource = _context.Complaints
-                    .Where(x => x.Users.Username.Contains(FilterCpTx.Text))
+                    .Where(x => x.User.Username.Contains(FilterCpTx.Text))
                     .Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.Users.Name,
-                        Username = x.Users.Username,
+                        Name = x.User.Name,
+                        Username = x.User.Username,
                         Title = x.Title,
                         RName = x.Restaurant.Name,
                         Status = x.Status.ToString()
@@ -313,12 +313,12 @@ namespace Restaurant_Manager
             else if (FilterCpCb.SelectedIndex == 1)
             {
                 ComplaintDg.ItemsSource = _context.Complaints
-                    .Where(x => x.Users.Name.Contains(FilterCpTx.Text))
+                    .Where(x => x.User.Name.Contains(FilterCpTx.Text))
                     .Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.Users.Name,
-                        Username = x.Users.Username,
+                        Name = x.User.Name,
+                        Username = x.User.Username,
                         Title = x.Title,
                         RName = x.Restaurant.Name,
                         Status = x.Status.ToString()
@@ -332,8 +332,8 @@ namespace Restaurant_Manager
                     .Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.Users.Name,
-                        Username = x.Users.Username,
+                        Name = x.User.Name,
+                        Username = x.User.Username,
                         Title = x.Title,
                         RName = x.Restaurant.Name,
                         Status = x.Status.ToString()
@@ -347,8 +347,8 @@ namespace Restaurant_Manager
                     .Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.Users.Name,
-                        Username = x.Users.Username,
+                        Name = x.User.Name,
+                        Username = x.User.Username,
                         Title = x.Title,
                         RName = x.Restaurant.Name,
                         Status = x.Status.ToString()
@@ -372,8 +372,8 @@ namespace Restaurant_Manager
                     .Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.Users.Name,
-                        Username = x.Users.Username,
+                        Name = x.User.Name,
+                        Username = x.User.Username,
                         Title = x.Title,
                         RName = x.Restaurant.Name,
                         Status = x.Status.ToString()
