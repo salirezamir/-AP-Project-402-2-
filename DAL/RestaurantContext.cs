@@ -17,6 +17,9 @@ namespace Restaurant_Manager.DAL
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
+        //for coustomer panel
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
 
 

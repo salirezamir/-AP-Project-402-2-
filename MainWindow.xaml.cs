@@ -138,13 +138,19 @@ namespace Restaurant_Manager
                     adminWindow.Show();
                     this.Close();
                 }
-
+                else if (user.Type == User.Types.Customer)
+                {
+                    CustomerPanel customerPanel = new CustomerPanel(user);
+                    customerPanel.Show();
+                    this.Close();
+                }
             }
             else
             {
                 MessageBox.Show("Invalid Username or Password");
             }
         }
+
 
         private void SignUpBtn_Click(object sender, RoutedEventArgs e)
         {
