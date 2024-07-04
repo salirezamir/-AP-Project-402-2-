@@ -44,5 +44,10 @@ namespace Restaurant_Manager
         {
 
         }
+
+        private void MenuDg_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
