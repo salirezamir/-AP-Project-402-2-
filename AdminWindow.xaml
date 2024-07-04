@@ -78,7 +78,7 @@
                     Grid.Row="3" Grid.Column="3"
                     Content="Filter"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="FilterRsBtn_Click"
+                     Click="FilterRsBtn_Click"
                 />
             </Grid>
         </TabItem>
@@ -140,7 +140,7 @@
                     Grid.Row="3" Grid.Column="3"
                     Content="Filter"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    
                     Click="FilterCpBtn_Click"
                 />
             </Grid>
@@ -222,7 +222,7 @@
                         Grid.Row="5" Grid.Column="9"
                         Content="Answer"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="AnswerCpAnBtn_Click"/>
+                         Click="AnswerCpAnBtn_Click"/>
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Visibility="Hidden" Text="-1"
                            x:Name="compAnId" HorizontalAlignment="Center"/>
@@ -343,7 +343,7 @@
                     Grid.Row="7" Grid.Column="9"
                     Content="Register"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="SinRsBtn_Click"/>
+                     Click="SinRsBtn_Click"/>
             </Grid>
         </TabItem>
     </TabControl>
