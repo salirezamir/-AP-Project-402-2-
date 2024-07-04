@@ -25,7 +25,7 @@
                 </Grid.ColumnDefinitions>
             
             <DataGrid AutoGenerateColumns="False"
-                      MouseDoubleClick="ComplaintDg_MouseDoubleClick"
+                      MouseDoubleClick="MenuDg_MouseDoubleClick"
                       x:Name="MenuDg" SelectionMode="Single"
                       Grid.Row="1" Grid.Column="1">
                 <DataGrid.Columns>
@@ -90,14 +90,14 @@
                         Grid.Row="7" Grid.Column="5"
                         Content="Add"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        Click="SinRsBtn_Click"/>
+                        />
                 <Button x:Name="RemoveBtn"
                         Grid.Row="7" Grid.Column="1"
                         Content="Remove"
                         IsEnabled="False" Visibility="Hidden"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                        Click="SinRsBtn_Click"/>
+                        />
             </Grid>
         </TabItem>
         <TabItem Header="History">
@@ -164,14 +164,14 @@
                     Grid.Row="3" Grid.Column="3"
                     Content="Filter"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    Click="FilterRsBtn_Click"
+                    
                 />
                 <Button
                     x:Name="SaveFilterBtn"
                     Grid.Row="4" Grid.Column="3"
                     Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    Click="FilterRsBtn_Click"
+                    
                     ToolTip="Save to .csv"
                 >
                     <materialDesign:PackIcon

@@ -25,7 +25,7 @@ namespace Restaurant_Manager
     {
         public string Name { get; set; }
         public string City { get; set; }
-        public int Rate { get; set; }
+        public double Rate { get; set; }
         public bool Complaint { get; set; }
     }
     class CompDGVM
@@ -100,7 +100,7 @@ namespace Restaurant_Manager
                 Address = AddrRsTx.Text,
                 DineIn = DineRsCb.SelectedIndex == 0 ? true : false,
                 Delivery = DeliveryRsCb.SelectedIndex == 0 ? true : false,
-                rate = 0,
+                AvgRate = 0,
                 Reservation = false
             };
             _context.Restaurants.Add(restaurant);
@@ -140,7 +140,7 @@ namespace Restaurant_Manager
                         => new RestDGVM
                         {
                             City = r.City,
-                            Rate = r.rate,
+                            Rate = r.AvgRate,
                             Name = r.Name,
                             Complaint = c.Where(x => x.Status == Complaint.CStatus.Pending).Any()
                         })
@@ -227,7 +227,7 @@ namespace Restaurant_Manager
                     => new RestDGVM
                     {
                         City = r.City,
-                        Rate = r.rate,
+                        Rate = r.AvgRate,
                         Name = r.Name,
                         Complaint = c.Where(x => x.Status == Complaint.CStatus.Pending).Any()
                     })
@@ -241,7 +241,7 @@ namespace Restaurant_Manager
                     => new RestDGVM
                     {
                         City = r.City,
-                        Rate = r.rate,
+                        Rate = r.AvgRate,
                         Name = r.Name,
                         Complaint = c.Where(x => x.Status == Complaint.CStatus.Pending).Any()
                     })
@@ -250,12 +250,12 @@ namespace Restaurant_Manager
             else if (FilterRsCb.SelectedIndex == 2)
             {
                 ResturantDg.ItemsSource = _context.Restaurants
-                    .Where(x => x.rate.ToString().Contains(FilterRsTx.Text))
+                    .Where(x => x.AvgRate.ToString().Contains(FilterRsTx.Text))
                     .GroupJoin(_context.Complaints, r => r, c => c.Restaurant, (r, c)
                     => new RestDGVM
                     {
                         City = r.City,
-                        Rate = r.rate,
+                        Rate = r.AvgRate,
                         Name = r.Name,
                         Complaint = c.Where(x => x.Status == Complaint.CStatus.Pending).Any()
                     })
@@ -278,7 +278,7 @@ namespace Restaurant_Manager
                     => new RestDGVM
                     {
                         City = r.City,
-                        Rate = r.rate,
+                        Rate = r.AvgRate,
                         Name = r.Name,
                         Complaint = c.Where(x => x.Status == status).Any()
                     })
