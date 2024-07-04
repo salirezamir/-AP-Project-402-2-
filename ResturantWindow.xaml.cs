@@ -34,5 +34,15 @@ namespace Restaurant_Manager
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
+
+        private void Tb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void HistoryDg_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

@@ -46,8 +46,7 @@
                         Grid.Row="3" Grid.Column="1"
                         Content="LogIn"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
+                        
                         Click="LoginBtn_Click" 
                     />
                 </Grid>
@@ -177,7 +176,7 @@
                         Content="SignUp"
                         VerticalAlignment="Bottom"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        
                         Click="SignUpBtn_Click"
                     />
                     <Grid x:Name="otpGrid"
@@ -217,7 +216,7 @@
                             Content="ReSend"
                             VerticalAlignment="center"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            
                             Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
                             Click="ResendOTPBtn_Click" 
                             />
@@ -228,7 +227,7 @@
                             VerticalAlignment="center"
                             materialDesign:ButtonAssist.CornerRadius="10"
                             Style="{StaticResource MaterialDesignRaisedLightButton}"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            
                             Click="VerifyOTPBtn_Click"
                             />
                     </Grid>
