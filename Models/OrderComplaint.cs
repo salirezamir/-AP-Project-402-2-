@@ -23,9 +23,6 @@ namespace Restaurant_Manager.Models
         public string? Answer { get; set; }
 
         [Required]
-        public virtual User User { get; set; }
-
-        [Required]
         public virtual Order Order { get; set; }
 
         [Required]

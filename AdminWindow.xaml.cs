@@ -182,8 +182,8 @@ namespace Restaurant_Manager
                     CompList = _context.OrderComplaints.Select(x => new CompDGVM
                     {
                         Id = x.Id,
-                        Name = x.User.Name,
-                        Username = x.User.Username,
+                        Name = x.Order.User.Name,
+                        Username = x.Order.User.Username,
                         Title = x.Title,
                         RName = x.Order.Id.ToString(),
                         Status = x.Status.ToString(),
@@ -248,8 +248,8 @@ namespace Restaurant_Manager
                             ComAnHint.Visibility = Visibility.Hidden;
                             var complaint = _context.OrderComplaints.Where(x => x.Id == st).Select(x => new
                             {
-                                x.User.Username,
-                                x.User.Name,
+                                x.Order.User.Username,
+                                x.Order.User.Name,
                                 x.Order.Id,
                                 x.Order.OrderDate,
                                 x.Detail,
