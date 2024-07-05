@@ -55,7 +55,7 @@ namespace Restaurant_Manager
         {
             var restaurantComplaints = _context.RestaurantComplaints.Where(c => c.User.Id == _currentUser.Id).ToList();
             var staffComplaints = _context.StuffComplaints.Where(c => c.User.Id == _currentUser.Id).ToList();
-            var orderComplaints = _context.OrderComplaints.Where(c => c.User.Id == _currentUser.Id).ToList();
+            var orderComplaints = _context.OrderComplaints.Where(c => c.Order.User.Id == _currentUser.Id).ToList();
 
             lstRestaurantComplaints.ItemsSource = restaurantComplaints;
             lstStuffComplaints.ItemsSource = staffComplaints;
@@ -164,7 +164,7 @@ namespace Restaurant_Manager
         {
             if (lstRestaurants.SelectedItem is Restaurant selectedRestaurant)
             {
-                var restaurantPage = new ResturantWindow(selectedRestaurant, _currentUser);
+                var restaurantPage = new RestaurantWindow(selectedRestaurant, _currentUser);
                 restaurantPage.Show();
             }
         }
@@ -192,7 +192,8 @@ namespace Restaurant_Manager
 
                         var newOrderComplaint = new OrderComplaint
                         {
-                            User = _currentUser,
+                            //User = _currentUser,
+                            Order = selectedOrder,
                             Detail = comment,
                             Title = $"Order {selectedOrder.Id} - Rating",
                             //Status = RestaurantComplaint.CStatus.Pending

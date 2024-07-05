@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace Restaurant_Manager
 {
     /// <summary>
-    /// Interaction logic for ResturantWindow.xaml
+    /// Interaction logic for RestaurantWindow.xaml
     /// </summary>
-    public partial class ResturantWindow : Window
+    public partial class RestaurantWindow : Window
     {
         User _user;
         Restaurant _restaurant;
-        public ResturantWindow(Restaurant restaurant,User user)
+        public RestaurantWindow(Restaurant restaurant,User user)
         {
             InitializeComponent();
             _restaurant = restaurant;
