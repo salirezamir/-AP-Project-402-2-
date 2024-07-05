@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Restaurant_Manager.Models
 {
@@ -19,5 +20,7 @@ namespace Restaurant_Manager.Models
         public decimal TotalAmount { get; set; }
         [Required]
         public Type OrderType { get; set; }
+        [Required]
+        public int Rate { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Restaurant_Manager.Models
 {
     public class Restaurant
     {
-        [Key,Required]
+        [Key, Required]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -27,3 +27,4 @@ namespace Restaurant_Manager.Models
         public bool Reservation { get; set; }
     }
 }
+
