@@ -31,6 +31,8 @@ namespace Restaurant_Manager.Models
         public SType fType { get; set; }
         [Required]
         public int Rate { get; set; }
+        [Required]
+        public bool Available { get; set; }
         public int PicFileId { get; set; }
     }
 }
