@@ -64,7 +64,9 @@ namespace Restaurant_Manager
         string rt = "";
         User _user;
         List<CompDGVM> CompList;
+        bool reapeat = false;
         private readonly RestaurantContext _context = new RestaurantContext();
+
         public AdminWindow(User user)
         {
             _user = user;
@@ -79,7 +81,7 @@ namespace Restaurant_Manager
             mainWindow.Show();
             
         }
-        bool reapeat = false;
+        
         private void SinRsBtn_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(UsernameRsTx.Text) || string.IsNullOrWhiteSpace(NameRsTx.Text)
@@ -113,7 +115,7 @@ namespace Restaurant_Manager
             User user = new User
             {
                 Username = UsernameRsTx.Text,
-                Name = "Resturant " + NameRsTx.Text,
+                Name = "Restaurant " + NameRsTx.Text,
                 Password = MainWindow.CreateMD5(pass.ToString()),
                 Email = EmailRsTx.Text,
                 Phone = PhoneRsTx.Text,
@@ -125,6 +127,7 @@ namespace Restaurant_Manager
             MessageBox.Show($"Restaurant Created\nUsername: {UsernameRsTx.Text}\nPassword: {pass}");
 
         }
+
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is TabControl)
@@ -204,6 +207,10 @@ namespace Restaurant_Manager
                         DetailAnTx.Clear();
                         FilterCpAnCb.SelectedIndex = -1;
                         AnswerAnTx.Clear();
+                    }
+                    else if (string.IsNullOrEmpty(UserNameCpAnTx.Text))
+                    {
+                        ComAnHint.Visibility = Visibility.Hidden;
                         if (rt == "Restaurant")
                         {
                             ComAnHint.Visibility = Visibility.Hidden;
@@ -274,25 +281,6 @@ namespace Restaurant_Manager
                             AnswerAnTx.Text = complaint.Answer;
                             FilterCpAnCb.SelectedIndex = (int)complaint.Status;
                         }
-                    }
-                    else if (string.IsNullOrEmpty(UserNameCpAnTx.Text))
-                    {
-                        ComAnHint.Visibility = Visibility.Hidden;
-                        var complaint = _context.RestaurantComplaints.Where(x => x.Id == st).Select(x => new
-                        {
-                            x.User.Username,
-                            x.User.Name,
-                            RName = x.Restaurant.Name,
-                            x.Detail,
-                            x.Answer,
-                            x.Status
-                        }).FirstOrDefault();
-                        UserNameCpAnTx.Text = complaint.Username;
-                        NameCpAnTx.Text = complaint.Name;
-                        ResNameCpAnTx.Text = complaint.RName;
-                        DetailAnTx.Text = complaint.Detail;
-                        AnswerAnTx.Text = complaint.Answer;
-                        FilterCpAnCb.SelectedIndex = (int)complaint.Status;
                         reapeat = true;
                     }
                 }

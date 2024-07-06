@@ -291,7 +291,7 @@
                     <TextBox.Text>
                         <Binding Path="Router" UpdateSourceTrigger="LostFocus">
                             <Binding.ValidationRules>
-                                <valid:NumberValidator/>
+                                <valid:PhoneValidator/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
