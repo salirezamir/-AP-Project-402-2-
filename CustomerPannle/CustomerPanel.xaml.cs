@@ -6,8 +6,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Net.Mail;
 using System.ComponentModel.DataAnnotations;
+using Restaurant_Manager.CustomerPanel;
+using System.Xml.Linq;
 
-namespace Restaurant_Manager
+namespace Restaurant_Manager.CustomerPannle
 {
     public partial class CustomerPanel : Window
     {
@@ -42,7 +44,7 @@ namespace Restaurant_Manager
         private void LoadRestaurants()
         {
             var restaurants = _context.Restaurants.ToList();
-            lstRestaurants.ItemsSource = restaurants;
+            RestaurantListView.ItemsSource = restaurants;
         }
 
         private void LoadOrders()
@@ -54,11 +56,11 @@ namespace Restaurant_Manager
         private void LoadComplaints()
         {
             var restaurantComplaints = _context.RestaurantComplaints.Where(c => c.User.Id == _currentUser.Id).ToList();
-            var staffComplaints = _context.StuffComplaints.Where(c => c.User.Id == _currentUser.Id).ToList();
+            var stuffComplaints = _context.StuffComplaints.Where(c => c.User.Id == _currentUser.Id).ToList();
             var orderComplaints = _context.OrderComplaints.Where(c => c.Order.User.Id == _currentUser.Id).ToList();
 
             lstRestaurantComplaints.ItemsSource = restaurantComplaints;
-            lstStuffComplaints.ItemsSource = staffComplaints;
+            lstStuffComplaints.ItemsSource = stuffComplaints;
             lstOrderComplaints.ItemsSource = orderComplaints;
         }
 
@@ -119,26 +121,28 @@ namespace Restaurant_Manager
 
         private void SearchRestaurants_Click(object sender, RoutedEventArgs e)
         {
-            string city = txtSearchCity.Text;
-            string name = txtSearchName.Text;
-            string receptionType = (cmbReceptionType.SelectedItem as ComboBoxItem)?.Content.ToString();
-            double.TryParse(txtMinScore.Text, out double minScore);
+            var city = txtSearchCity.Text;
+            var name = txtSearchName.Text;
+            var receptionType = (cmbReceptionType.SelectedItem as ComboBoxItem)?.Content.ToString();
+            bool isValidScore = double.TryParse(txtMinScore.Text, out double minScore);
 
             var filteredRestaurants = _context.Restaurants.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(city))
+            if (!string.IsNullOrEmpty(city))
             {
                 filteredRestaurants = filteredRestaurants.Where(r => r.City.Contains(city));
             }
-
-            if (!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 filteredRestaurants = filteredRestaurants.Where(r => r.Name.Contains(name));
             }
-
-            if (!string.IsNullOrWhiteSpace(receptionType))
+            if (!string.IsNullOrEmpty(receptionType))
             {
-                if (receptionType == "Delivery")
+                if (receptionType == "Both")
+                {
+                    filteredRestaurants = filteredRestaurants.Where(r => r.Delivery && r.DineIn);
+                }
+                else if (receptionType == "Delivery")
                 {
                     filteredRestaurants = filteredRestaurants.Where(r => r.Delivery);
                 }
@@ -146,26 +150,22 @@ namespace Restaurant_Manager
                 {
                     filteredRestaurants = filteredRestaurants.Where(r => r.DineIn);
                 }
-                else if (receptionType == "Both")
-                {
-                    filteredRestaurants = filteredRestaurants.Where(r => r.Delivery || r.DineIn);
-                }
             }
-
-            if (minScore > 0)
+            if (isValidScore)
             {
                 filteredRestaurants = filteredRestaurants.Where(r => r.AvgRate >= minScore);
             }
 
-            lstRestaurants.ItemsSource = filteredRestaurants.ToList();
+            RestaurantListView.ItemsSource = filteredRestaurants.ToList();
         }
 
-        private void LstRestaurants_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void RestaurantListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (lstRestaurants.SelectedItem is Restaurant selectedRestaurant)
+            if (RestaurantListView.SelectedItem is Restaurant selectedRestaurant)
             {
-                var restaurantPage = new RestaurantWindow(selectedRestaurant, _currentUser);
-                restaurantPage.Show();
+                var restaurantDetail = new RestaurantPanelForCustomer(selectedRestaurant);
+                restaurantDetail.Show();
+                this.Close();
             }
         }
 
@@ -173,53 +173,33 @@ namespace Restaurant_Manager
         {
             if (lstOrders.SelectedItem is Order selectedOrder)
             {
-                // Optionally, you can display more details of the selected order
+                txtOrderRating.Text = selectedOrder.Rate.ToString() ?? string.Empty;
             }
         }
 
-        private void SubmitOrderComment_Click(object sender, RoutedEventArgs e)
+        private void SubmitOrderRating_Click(object sender, RoutedEventArgs e)
         {
             if (lstOrders.SelectedItem is Order selectedOrder)
             {
                 if (int.TryParse(txtOrderRating.Text, out int rating) && rating >= 1 && rating <= 5)
                 {
-                    string comment = txtOrderComment.Text;
+                    selectedOrder.Rate = rating;
 
-                    var orderStuffs = _context.Order_Stuffs.Where(os => os.order.Id == selectedOrder.Id).ToList();
-                    if (orderStuffs.Any())
+                    try
                     {
-                        var restaurant = orderStuffs.First().stuff.Resturant;
-
-                        var newOrderComplaint = new OrderComplaint
-                        {
-                            //User = _currentUser,
-                            Order = selectedOrder,
-                            Detail = comment,
-                            Title = $"Order {selectedOrder.Id} - Rating",
-                            //Status = RestaurantComplaint.CStatus.Pending
-                        };
-
-                        _context.OrderComplaints.Add(newOrderComplaint);
-
-                        selectedOrder.Rate = rating;
                         _context.Orders.Update(selectedOrder);
                         _context.SaveChanges();
-
-                        MessageBox.Show("Comment and Rating submitted successfully!");
+                        MessageBox.Show("Rating submitted successfully!");
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("No items found for the selected order.");
+                        MessageBox.Show("Error submitting rating: " + ex.Message);
                     }
                 }
                 else
                 {
                     MessageBox.Show("Please enter a valid rating between 1 and 5.");
                 }
-            }
-            else
-            {
-                MessageBox.Show("Please select an order.");
             }
         }
     }

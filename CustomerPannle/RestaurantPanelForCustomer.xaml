@@ -1,0 +1,46 @@
+﻿<Window x:Class="Restaurant_Manager.CustomerPanel.RestaurantPanelForCustomer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Restaurant Detail" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Menu">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Name="MenuListView" MouseDoubleClick="MenuListView_MouseDoubleClick" Grid.Column="0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                                <GridViewColumn Header="Type" DisplayMemberBinding="{Binding fType}" />
+                                <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}" />
+                                <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rate}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Grid.Column="1" Margin="10">
+                        <TextBlock Text="Comments" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <ListView Name="CommentListView">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="User" DisplayMemberBinding="{Binding UserName}" />
+                                    <GridViewColumn Header="Comment" DisplayMemberBinding="{Binding CommentText}" />
+                                    <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating}" />
+                                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Reserve">
+                <!-- Reservation form -->
+            </TabItem>
+            <TabItem Header="Order">
+                <!-- Order form -->
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

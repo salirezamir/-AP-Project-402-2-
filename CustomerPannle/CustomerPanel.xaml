@@ -1,57 +1,29 @@
-﻿<Window x:Class="Restaurant_Manager.CustomerPanel"
+﻿<Window x:Class="Restaurant_Manager.CustomerPannle.CustomerPanel"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:validationRules="clr-namespace:Restaurant_Manager.ValidationRules"
-        mc:Ignorable="d"
-        Title="Customer Panel" Height="450" Width="800">
+        Title="Customer Panel" Height="600" Width="800">
     <Grid>
-        <TabControl>
+        <TabControl Margin="10">
+            <!-- Profile Tab -->
             <TabItem Header="Profile">
                 <StackPanel Margin="20">
                     <TextBox x:Name="txtUsername" Margin="0,10" materialDesign:HintAssist.Hint="Username" IsReadOnly="True" IsEnabled="False"/>
-                    <TextBox x:Name="txtName" Margin="0,10" materialDesign:HintAssist.Hint="Name" IsReadOnly="True" IsEnabled="False">
-                        <TextBox.Text>
-                            <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validationRules:NameValidator/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <TextBox x:Name="txtPhone" Margin="0,10" materialDesign:HintAssist.Hint="Phone" IsReadOnly="True" IsEnabled="False">
-                        <TextBox.Text>
-                            <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validationRules:PhoneValidator/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <TextBox x:Name="txtEmail" Margin="0,10" materialDesign:HintAssist.Hint="Email">
-                        <TextBox.Text>
-                            <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validationRules:EmailValidator/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <TextBox x:Name="txtZipcode" Margin="0,10" materialDesign:HintAssist.Hint="Zip Code">
-                        <TextBox.Text>
-                            <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <ComboBox x:Name="cmbGender" Margin="0,10" materialDesign:HintAssist.Hint="Gender" SelectionChanged="Gender_SelectionChanged">
+                    <TextBox x:Name="txtName" Margin="0,10" materialDesign:HintAssist.Hint="Name" IsReadOnly="True" IsEnabled="False"/>
+                    <TextBox x:Name="txtPhone" Margin="0,10" materialDesign:HintAssist.Hint="Phone" IsReadOnly="True" IsEnabled="False"/>
+                    <TextBox x:Name="txtEmail" Margin="0,10" materialDesign:HintAssist.Hint="Email" IsReadOnly="True"/>
+                    <TextBox x:Name="txtZipcode" Margin="0,10" materialDesign:HintAssist.Hint="Zipcode"/>
+                    <ComboBox x:Name="cmbGender" Margin="0,10" materialDesign:HintAssist.Hint="Gender">
                         <ComboBoxItem Content="Male"/>
                         <ComboBoxItem Content="Female"/>
                     </ComboBox>
                     <Button Content="Update" Click="UpdateProfile_Click"/>
                 </StackPanel>
             </TabItem>
+
+            <!-- Restaurants Tab -->
             <TabItem Header="Restaurants">
                 <StackPanel Margin="20">
                     <TextBox x:Name="txtSearchCity" Margin="0,10" materialDesign:HintAssist.Hint="City"/>
@@ -63,22 +35,38 @@
                     </ComboBox>
                     <TextBox x:Name="txtMinScore" Margin="0,10" materialDesign:HintAssist.Hint="Minimum Average Score"/>
                     <Button Content="Search" Click="SearchRestaurants_Click"/>
-                    <ListBox x:Name="lstRestaurants" Margin="20" DisplayMemberPath="Name" MouseDoubleClick="LstRestaurants_MouseDoubleClick"/>
+
+                    <!-- DataGrid for listing restaurants -->
+                    <Grid>
+                        <ListView Name="RestaurantListView" MouseDoubleClick="RestaurantListView_MouseDoubleClick">
+                            <ListView.View>
+                                <GridView>
+                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                                        <GridViewColumn Header="City" DisplayMemberBinding="{Binding City}" />
+                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
+                                        <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding AvgRate}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
                 </StackPanel>
             </TabItem>
+
+            <!-- Orders Tab -->
             <TabItem Header="Orders">
                 <StackPanel Margin="20">
                     <ListBox x:Name="lstOrders" Margin="20" DisplayMemberPath="OrderDate" SelectionChanged="LstOrders_SelectionChanged"/>
-                    <TextBox x:Name="txtOrderComment" Margin="0,10" materialDesign:HintAssist.Hint="Comment"/>
                     <TextBox x:Name="txtOrderRating" Margin="0,10" materialDesign:HintAssist.Hint="Rating (1-5)"/>
-                    <Button Content="Submit Comment and Rating" Click="SubmitOrderComment_Click"/>
+                    <Button Content="Submit Rating" Click="SubmitOrderRating_Click"/>
                 </StackPanel>
             </TabItem>
+
+            <!-- Complaints Tab -->
             <TabItem Header="Complaints">
                 <StackPanel Margin="20">
                     <TextBlock Text="Restaurant Complaints"/>
                     <ListBox x:Name="lstRestaurantComplaints" Margin="10"/>
-                    <TextBlock Text="Staff Complaints"/>
+                    <TextBlock Text="Stuff Complaints"/>
                     <ListBox x:Name="lstStuffComplaints" Margin="10"/>
                     <TextBlock Text="Order Complaints"/>
                     <ListBox x:Name="lstOrderComplaints" Margin="10"/>
