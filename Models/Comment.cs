@@ -16,7 +16,7 @@ namespace Restaurant_Manager.Models
         [Required]
         public string Details { get; set; }
         [Required]
-        public Stuff? Stuff { get; set; }
-        //public virtual Resturants? Restaurant { get; set; }
+        public Stuff Stuff { get; set; }
+        public string Answer { get; set; }
     }
 }
