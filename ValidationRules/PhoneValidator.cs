@@ -10,15 +10,20 @@ using System.Windows.Controls;
 
 namespace Restaurant_Manager.ValidationRules
 {
-    public class NumberValidator : ValidationRule
+    public class PhoneValidator : ValidationRule
     {
+        private RestaurantContext _context = new RestaurantContext();
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             if (value is string number)
             {
-                string numberPattern = @"^[0-9]*$";
+                string numberPattern = @"^09\d{9}$";
                 if (Regex.IsMatch(number, numberPattern))
                 {
+                    if (_context.Users.Any(u => u.Phone == number))
+                    {
+                        return new ValidationResult(false, $"PhoneNumber already exists");
+                    }
                     return ValidationResult.ValidResult;
                 }
             }

@@ -91,7 +91,6 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="120"/>
-                    
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
@@ -106,12 +105,13 @@
                           x:Name="ComplaintDg" SelectionMode="Single"
                           Grid.Row="1" Grid.RowSpan="4" Grid.Column="1">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="50" Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
                         <DataGridTextColumn Header="Username" Binding="{Binding Username}"  IsReadOnly="True"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Resturant Name" Binding="{Binding RName}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="For" Binding="{Binding For}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <TextBlock Grid.Row="2" Grid.Column="3"
@@ -223,9 +223,6 @@
                         Content="Answer"
                         materialDesign:ButtonAssist.CornerRadius="10"
                          Click="AnswerCpAnBtn_Click"/>
-                <TextBlock Grid.Row="1" Grid.Column="1"
-                           Visibility="Hidden" Text="-1"
-                           x:Name="compAnId" HorizontalAlignment="Center"/>
             </Grid>
 
         </TabItem>
@@ -294,7 +291,7 @@
                     <TextBox.Text>
                         <Binding Path="Router" UpdateSourceTrigger="LostFocus">
                             <Binding.ValidationRules>
-                                <valid:NumberValidator/>
+                                <valid:PhoneValidator/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>

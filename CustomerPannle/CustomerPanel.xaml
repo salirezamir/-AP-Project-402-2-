@@ -25,7 +25,7 @@
                         <TextBox.Text>
                             <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <validationRules:NumberValidator/>
+                                    <validationRules:PhoneValidator/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

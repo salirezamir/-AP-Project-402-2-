@@ -165,7 +165,7 @@
                         <TextBox.Text>
                             <Binding Path="Number" UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
-                                    <valid:NumberValidator/>
+                                    <valid:PhoneValidator/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -205,7 +205,7 @@
                             <TextBox.Text>
                                 <Binding Path="Number" UpdateSourceTrigger="LostFocus">
                                     <Binding.ValidationRules>
-                                        <valid:NumberValidator/>
+                                        <valid:PhoneValidator/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>

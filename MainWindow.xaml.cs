@@ -148,7 +148,7 @@ namespace Restaurant_Manager
                 else if (user.Type == User.Types.Restaurant)
                 {
                     Restaurant restaurant = _context.Users.Where(x => x.Id == user.Id).Select(x => x.Restaurant).FirstOrDefault();
-                    ResturantWindow resturantWindow = new ResturantWindow(restaurant, user);
+                    RestaurantWindow resturantWindow = new RestaurantWindow(restaurant, user);
                     resturantWindow.Show();
                     this.Close();
                 }
