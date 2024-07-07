@@ -1,8 +1,8 @@
 ﻿using Restaurant_Manager.Models;
 using System.Windows;
+using System.Linq;
 using Restaurant_Manager.DAL;
 using System;
-
 
 namespace Restaurant_Manager.CustomerPannle
 {
@@ -19,7 +19,12 @@ namespace Restaurant_Manager.CustomerPannle
 
         private void LoadMenu()
         {
-            MenuListView.ItemsSource = _restaurant.Menu;
+            using (var context = new RestaurantContext())
+            {
+                MenuListView.ItemsSource = context.Stuffs
+                    .Where(s => s.Resturant.Id == _restaurant.Id)
+                    .ToList();
+            }
         }
 
         private void MenuListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -32,7 +37,12 @@ namespace Restaurant_Manager.CustomerPannle
 
         private void LoadComments(Stuff stuff)
         {
-            CommentListView.ItemsSource = stuff.Comments.ToList();
+            using (var context = new RestaurantContext())
+            {
+                CommentListView.ItemsSource = context.Comments
+                    .Where(c => c.Stuff.Id == stuff.Id)
+                    .ToList();
+            }
         }
     }
 }

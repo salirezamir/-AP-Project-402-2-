@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Net.Mail;
 using System.ComponentModel.DataAnnotations;
-using Restaurant_Manager.CustomerPanel;
+using Restaurant_Manager.CustomerPannle;
 using System.Xml.Linq;
 
 namespace Restaurant_Manager.CustomerPannle
