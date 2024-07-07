@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Identity.Client.NativeInterop;
+using Microsoft.Win32;
 using Restaurant_Manager.DAL;
 using Restaurant_Manager.Models;
 using System;
@@ -23,8 +24,8 @@ namespace Restaurant_Manager
     /// Interaction logic for RestaurantWindow.xaml
     /// </summary>
     /// public static class ExportData
-        
-        
+
+
     public class MenuView
     {
         public int Id { get; set; }
@@ -38,6 +39,7 @@ namespace Restaurant_Manager
     public class HistView
     {
         public int Id { get; set; }
+        public string UName { get; set; }
         public string UserName { get; set; }
         public string OrderDate { get; set; }
         public string TotalAmount { get; set; }
@@ -66,7 +68,7 @@ namespace Restaurant_Manager
     }
     public partial class RestaurantWindow : Window
     {
-        List<HistView> _histViews ;
+        List<HistView> _histViews;
         User _user;
         Restaurant _restaurant;
         bool repeat = false;
@@ -108,20 +110,25 @@ namespace Restaurant_Manager
             }
         }
 
-        public RestaurantWindow(Restaurant restaurant,User user)
+        public RestaurantWindow(Restaurant restaurant, User user)
         {
             InitializeComponent();
             _restaurant = restaurant;
             _user = user;
-            //_histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
-            //    .Where(x => x.u.stuff.Resturant == _restaurant)
-            //    .Select(x => new HistView { 
-            //        Id = x.o.Id.ToString(),
-            //        UserName = x.o.User.Name,
-            //        OrderDate = x.o.OrderDate.ToString(),
-            //        TotalAmount = x.o.TotalAmount.ToString(),
-            //        Type = x.u.stuff.fType.ToString() 
-            //    }).ToList();
+            _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                .Where(x => x.u.stuff.Resturant == _restaurant)
+                .Select(x => new HistView
+                {
+                    Id = x.o.Id,
+                    UserName = x.o.User.Username,
+                    OrderDate = x.o.OrderDate.ToString(),
+                    TotalAmount = x.o.TotalAmount.ToString(),
+                    Type = x.o.OrderType.ToString()
+                })
+                .GroupBy(x => x.Id)
+                .Select(y => y.First())
+                .ToList();
+            CommentDg.Visibility = Visibility.Hidden;
             DataContext = new RestVM();
             if (_restaurant.AvgRate >= 4.5)
             {
@@ -131,12 +138,12 @@ namespace Restaurant_Manager
                 StTxb.Text = "Status :";
                 if (_restaurant.Reservation)
                 {
-                    AcTxb.Text += "Activated";
+                    StTxb.Text += "Activated";
                     ActivateBtn.Content = "Deactivate";
                 }
                 else
                 {
-                    AcTxb.Text += "Deactivated";
+                    StTxb.Text += "Deactivated";
                     ActivateBtn.Content = "Activate";
                 }
             }
@@ -179,7 +186,7 @@ namespace Restaurant_Manager
                         AnswerTx.Visibility = Visibility.Hidden;
                         CommentDg.Visibility = Visibility.Hidden;
                     }
-                    else
+                    else if (CommentDg.Visibility == Visibility.Hidden)
                     {
                         Stuff stuff = _context.Stuffs.Where(x => x.Id == id).First();
                         NameRsTx.Text = stuff.Name;
@@ -210,12 +217,12 @@ namespace Restaurant_Manager
                         StTxb.Text = "Status :";
                         if (_restaurant.Reservation)
                         {
-                            AcTxb.Text += "Activated";
+                            StTxb.Text += "Activated";
                             ActivateBtn.Content = "Deactivate";
                         }
                         else
                         {
-                            AcTxb.Text += "Deactivated";
+                            StTxb.Text += "Deactivated";
                             ActivateBtn.Content = "Activate";
                         }
                     }
@@ -225,6 +232,9 @@ namespace Restaurant_Manager
                         ActivateBtn.Visibility = Visibility.Hidden;
                         StTxb.Visibility = Visibility.Hidden;
                     }
+                    passwordNewTx.Clear();
+                    passwordNewRTx.Clear();
+                    passwordOldTx.Clear();
                 }
                 else if (Tb.SelectedIndex == 1)
                 {
@@ -242,17 +252,20 @@ namespace Restaurant_Manager
                 }
                 else if (Tb.SelectedIndex == 3)
                 {
-                    _histViews = _context.Order_Stuffs.Where(x => x.stuff.Resturant == _restaurant)
-                    .GroupBy(x => x.order)
-                    .ToList()
-                    .Select(x => new HistView
-                    {
-                        Id = x.Key.Id,
-                        UserName = x.Key.User.Name,
-                        OrderDate = x.Key.OrderDate.ToString("yyyy-MM-dd HH:mm"),
-                        TotalAmount = x.Key.TotalAmount.ToString(),
-                        Type = x.Key.OrderType.ToString()
-                    }).ToList();
+                    _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                        .Where(x => x.u.stuff.Resturant == _restaurant)
+                        .Select(x => new HistView
+                        {
+                            Id = x.o.Id,
+                            UserName = x.o.User.Username,
+                            OrderDate = x.o.OrderDate.ToString(),
+                            TotalAmount = x.o.TotalAmount.ToString(),
+                            Type = x.o.OrderType.ToString(),
+                            UName = x.o.User.Name
+                        })
+                        .GroupBy(x => x.Id)
+                        .Select(y => y.First())
+                        .ToList();
                     HistoryDg.ItemsSource = _histViews;
                     StuffsDg.ItemsSource = null;
                     FilterHiCb.SelectedIndex = -1;
@@ -354,6 +367,14 @@ namespace Restaurant_Manager
                     return;
                 StuffsDg.ItemsSource = _context.Order_Stuffs
                     .Where(x => x.order.Id == (HistoryDg.SelectedItem as HistView).Id)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Price,
+                        x.stuff.Name,
+                        x.Quantity,
+                        Type = x.stuff.fType.ToString()
+                    })
                     .ToList();
             }
         }
@@ -365,68 +386,79 @@ namespace Restaurant_Manager
             StuffsDg.ItemsSource = null;
             if (FilterHiCb.SelectedIndex == 0)
             {
-                _histViews = _context.Order_Stuffs.Where(x => x.stuff.Resturant == _restaurant )
-                .GroupBy(x => x.order)
-                .ToList()
-                .Select(x => new HistView
-                {
-                    Id = x.Key.Id,
-                    UserName = x.Key.User.Name,
-                    OrderDate = x.Key.OrderDate.ToString("yyyy-MM-dd HH:mm"),
-                    TotalAmount = x.Key.TotalAmount.ToString(),
-                    Type = x.Key.OrderType.ToString()
-                })
-                .Where(x => x.UserName == FilterHiTx.Text)
-                .ToList();
+                _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                    .Where(x => x.u.stuff.Resturant == _restaurant)
+                    .Where(x => x.o.User.Username.Contains(FilterHiTx.Text))
+                    .Select(x => new HistView
+                    {
+                        Id = x.o.Id,
+                        UserName = x.o.User.Username,
+                        OrderDate = x.o.OrderDate.ToString(),
+                        TotalAmount = x.o.TotalAmount.ToString(),
+                        Type = x.o.OrderType.ToString(),
+                        UName = x.o.User.Name
+                    })
+                    .GroupBy(x => x.Id)
+                    .Select(y => y.First())
+                    .ToList();
                 HistoryDg.ItemsSource = _histViews;
             }
             else if (FilterHiCb.SelectedIndex == 1)
             {
                 _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
-                    .Where(x => x.o.User.Phone == FilterHiTx.Text && x.u.stuff.Resturant == _restaurant)
+                    .Where(x => x.u.stuff.Resturant == _restaurant)
+                    .Where(x => x.o.User.Phone.Contains(FilterHiTx.Text))
                     .Select(x => new HistView
                     {
                         Id = x.o.Id,
-                        UserName = x.o.User.Name,
+                        UserName = x.o.User.Username,
                         OrderDate = x.o.OrderDate.ToString(),
                         TotalAmount = x.o.TotalAmount.ToString(),
-                        Type = x.u.stuff.fType.ToString()
-                    }).ToList();
+                        Type = x.o.OrderType.ToString(),
+                        UName = x.o.User.Name
+                    })
+                    .GroupBy(x => x.Id)
+                    .Select(y => y.First())
+                    .ToList();
                 HistoryDg.ItemsSource = _histViews;
             }
             else if (FilterHiCb.SelectedIndex == 2)
             {
-                _histViews = _context.Order_Stuffs.Where(x => x.stuff.Name == FilterHiTx.Text && x.stuff.Resturant == _restaurant)
-                    .GroupBy(x => x.order)
-                    .ToList()
+                _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                    .Where(x => x.u.stuff.Resturant == _restaurant && x.u.stuff.Name.Contains(FilterHiTx.Text))
                     .Select(x => new HistView
                     {
-                        Id = x.Key.Id,
-                        UserName = x.Key.User.Name,
-                        OrderDate = x.Key.OrderDate.ToString(),
-                        TotalAmount = x.Key.TotalAmount.ToString(),
-                        Type = x.Key.OrderType.ToString()
-                    }).ToList();
+                        Id = x.o.Id,
+                        UserName = x.o.User.Username,
+                        OrderDate = x.o.OrderDate.ToString(),
+                        TotalAmount = x.o.TotalAmount.ToString(),
+                        Type = x.o.OrderType.ToString(),
+                        UName = x.o.User.Name
+                    })
+                    .GroupBy(x => x.Id)
+                    .Select(y => y.First())
+                    .ToList();
                 HistoryDg.ItemsSource = _histViews;
             }
             else if (FilterHiCb.SelectedIndex == 3)
             {
                 if (long.TryParse(FilterHiTx.Text, out long amount))
                 {
-                    _histViews = _context.Order_Stuffs.Where(x => x.stuff.Resturant == _restaurant)
-                    .GroupBy(x => x.order)
-                    .Where(x => x.Key.TotalAmount >= amount)
-                    .ToList()
-                    .Select(x => new HistView
-                    {
-                        Id = x.Key.Id,
-                        UserName = x.Key.User.Name,
-                        OrderDate = x.Key.OrderDate.ToString("yyyy-MM-dd HH:mm"),
-                        TotalAmount = x.Key.TotalAmount.ToString(),
-                        Type = x.Key.OrderType.ToString()
-                    })
-                    .Where(x => x.UserName == FilterHiTx.Text)
-                    .ToList();
+                    _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                        .Where(x => x.u.stuff.Resturant == _restaurant)
+                        .Where(x => x.o.TotalAmount >= amount)
+                        .Select(x => new HistView
+                        {
+                            Id = x.o.Id,
+                            UserName = x.o.User.Username,
+                            OrderDate = x.o.OrderDate.ToString(),
+                            TotalAmount = x.o.TotalAmount.ToString(),
+                            Type = x.o.OrderType.ToString(),
+                            UName = x.o.User.Name
+                        })
+                        .GroupBy(x => x.Id)
+                        .Select(y => y.First())
+                        .ToList();
                     HistoryDg.ItemsSource = _histViews;
                 }
             }
@@ -434,61 +466,73 @@ namespace Restaurant_Manager
             {
                 if (long.TryParse(FilterHiTx.Text, out long amount))
                 {
-                    _histViews = _context.Order_Stuffs.Where(x => x.stuff.Resturant == _restaurant)
-                    .GroupBy(x => x.order)
-                    .Where(x => x.Key.TotalAmount <= amount)
-                    .ToList()
-                    .Select(x => new HistView
-                    {
-                        Id = x.Key.Id,
-                        UserName = x.Key.User.Name,
-                        OrderDate = x.Key.OrderDate.ToString("yyyy-MM-dd HH:mm"),
-                        TotalAmount = x.Key.TotalAmount.ToString(),
-                        Type = x.Key.OrderType.ToString()
-                    })
-                    .Where(x => x.UserName == FilterHiTx.Text)
-                    .ToList();
+                    _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                        .Where(x => x.u.stuff.Resturant == _restaurant)
+                        .Where(x => x.o.TotalAmount <= amount)
+                        .Select(x => new HistView
+                        {
+                            Id = x.o.Id,
+                            UserName = x.o.User.Username,
+                            OrderDate = x.o.OrderDate.ToString(),
+                            TotalAmount = x.o.TotalAmount.ToString(),
+                            Type = x.o.OrderType.ToString(),
+                            UName = x.o.User.Name
+                        })
+                        .GroupBy(x => x.Id)
+                        .Select(y => y.First())
+                        .ToList();
                     HistoryDg.ItemsSource = _histViews;
                 }
             }
             else if (FilterHiCb.SelectedIndex == 5)
             {
-                _histViews = _context.Order_Stuffs.Where(x => x.stuff.Resturant == _restaurant)
-                .GroupBy(x => x.order)
-                .ToList()
-                .Where(x => x.Key.OrderType.ToString() == FilterHiTx.Text)
-                .Select(x => new HistView
-                {
-                    Id = x.Key.Id,
-                    UserName = x.Key.User.Name,
-                    OrderDate = x.Key.OrderDate.ToString("yyyy-MM-dd HH:mm"),
-                    TotalAmount = x.Key.TotalAmount.ToString(),
-                    Type = x.Key.OrderType.ToString()
-                })
-                .Where(x => x.UserName == FilterHiTx.Text)
-                .ToList();
+                _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                    .Where(x => x.u.stuff.Resturant == _restaurant)
+                    .Select(x => new HistView
+                    {
+                        Id = x.o.Id,
+                        UserName = x.o.User.Username,
+                        OrderDate = x.o.OrderDate.ToString(),
+                        TotalAmount = x.o.TotalAmount.ToString(),
+                        Type = x.o.OrderType.ToString(),
+                        UName = x.o.User.Name
+                    })
+                    .GroupBy(x => x.Id)
+                    .Select(y => y.First())
+                    .Where(x => x.Type.Contains(FilterHiTx.Text))
+                    .ToList();
                 HistoryDg.ItemsSource = _histViews;
             }
             else if (FilterHiCb.SelectedIndex == 6)
             {
                 try
                 {
-                    var s = FilterHiTx.Text.Split("/");
+                    var s = FilterHiTx.Text.Split("|");
                     DateTime d1 = DateTime.Parse(s[0]);
                     DateTime d2 = DateTime.Parse(s[1]);
-                    TimeSpan df = d1 - d2;
+                    DateTime d;
+                    if (d1 < d2)
+                    {
+                        d = d2;
+                        d2 = d1;
+                        d1 = d;
+                    }
 
-                    _histViews = _context.Order_Stuffs.Where(x => x.order.OrderDate - d1 <= df && x.order.OrderDate - d2 >= df)
-                        .GroupBy(x => x.order)
-                        .ToList()
-                        .Select(x => new HistView
-                        {
-                            Id = x.Key.Id,
-                            UserName = x.Key.User.Name,
-                            OrderDate = x.Key.OrderDate.ToString(),
-                            TotalAmount = x.Key.TotalAmount.ToString(),
-                            Type = x.Key.OrderType.ToString()
-                        }).ToList();
+                    _histViews = _context.Orders.Join(_context.Order_Stuffs, o => o, u => u.order, (o, u) => new { o, u })
+                    .Where(x => x.u.stuff.Resturant == _restaurant)
+                    .Where(x => x.o.OrderDate <= d1 && x.o.OrderDate >= d2)
+                    .Select(x => new HistView
+                    {
+                        Id = x.o.Id,
+                        UserName = x.o.User.Username,
+                        OrderDate = x.o.OrderDate.ToString(),
+                        TotalAmount = x.o.TotalAmount.ToString(),
+                        Type = x.o.OrderType.ToString(),
+                        UName = x.o.User.Name
+                    })
+                    .GroupBy(x => x.Id)
+                    .Select(y => y.First())
+                    .ToList();
                     HistoryDg.ItemsSource = _histViews;
                 }
                 catch
@@ -547,6 +591,32 @@ namespace Restaurant_Manager
                 ActivateBtn.Visibility = Visibility.Hidden;
                 StTxb.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void PassEnaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (passwordNewTx.Password == "" || passwordNewRTx.Password == "" || passwordOldTx.Password == "")
+            {
+                MessageBox.Show("Please Fill All Fields");
+                return;
+            }
+            if (MainWindow.CreateMD5(passwordOldTx.Password) != _user.Password)
+            {
+                MessageBox.Show("Old Password is Incorrect");
+                return;
+            }
+            if (passwordNewTx.Password != passwordNewRTx.Password)
+            {
+                MessageBox.Show("New Passwords are not the same");
+                return;
+            }
+            _user = _context.Users.Where(x => x.Id == _user.Id).First();
+            _user.Password = MainWindow.CreateMD5(passwordNewRTx.Password);
+            _context.SaveChanges();
+            passwordNewTx.Clear();
+            passwordNewRTx.Clear();
+            passwordOldTx.Clear();
+
         }
     }
 }

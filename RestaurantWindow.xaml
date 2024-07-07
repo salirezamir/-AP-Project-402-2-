@@ -23,6 +23,8 @@
                     <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Text="Wellcome to Restaurant Manager"
@@ -45,6 +47,31 @@
                         Content="Activate" Click="ActivateBtn_Click"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         Style="{StaticResource MaterialDesignRaisedDarkButton}"/>
+                <PasswordBox
+                        Grid.Row="1" Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Height="50"
+                        x:Name="passwordOldTx"
+                        materialDesign:HintAssist.Hint="OldPassword"
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+                <PasswordBox
+                        Grid.Row="2" Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Height="50"
+                        x:Name="passwordNewTx"
+                        materialDesign:HintAssist.Hint="NewPassword"
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+                <PasswordBox
+                        Grid.Row="3" Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Height="50"
+                        x:Name="passwordNewRTx"
+                        materialDesign:HintAssist.Hint="Repeat Password"
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+                <Button x:Name="PassEnaBtn"
+                        Grid.Row="4" Grid.Column="4"
+                        Content="Change Password"
+                        materialDesign:ButtonAssist.CornerRadius="10" Click="PassEnaBtn_Click"/>
             </Grid>
         </TabItem>
         <TabItem Header="Menu">
@@ -209,6 +236,7 @@
                             Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="UName" Binding="{Binding UName}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="UserName" Binding="{Binding UserName}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="OrderDate-Time" Binding="{Binding OrderDate}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="TotalAmount" Binding="{Binding TotalAmount}" IsReadOnly="True"/>
@@ -220,7 +248,7 @@
                             Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="sId" Binding="{Binding Id}" Visibility="Hidden"/>
-                        <DataGridTextColumn Header="Stuff Name" Binding="{Binding stuff}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Stuff Name" Binding="{Binding Name}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Price" Binding="{Binding Price}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True"/>
