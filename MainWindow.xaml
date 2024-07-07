@@ -7,11 +7,12 @@
         xmlns:local="clr-namespace:Restaurant_Manager"
         xmlns:valid="clr-namespace:Restaurant_Manager.ValidationRules"
         Style="{StaticResource MaterialDesignWindow}"
-        mc:Ignorable="d"
+        mc:Ignorable="d" ResizeMode="NoResize"
         Title="MainWindow" Height="450" Width="600">
     <Grid>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="SignIn" >
+
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
@@ -38,21 +39,19 @@
                         Height="50"
                         x:Name="passwordInTx"
                         materialDesign:HintAssist.Hint="Password"
-                        Style="{StaticResource MaterialDesignFilledPasswordBox}"
-                    />
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
                     <Button
                         x:Name="LoginBtn"
                         Grid.Row="3" Grid.Column="1"
                         Content="LogIn"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-                        Click="LoginBtn_Click" 
-                    />
+                        Click="LoginBtn_Click" />
                 </Grid>
             </TabItem>
             <TabItem Header="SignUp">
+
                 <Grid>
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="60"/>
@@ -99,6 +98,7 @@
                             materialDesign:HintAssist.Hint="Name"
                             AcceptsReturn="True"
                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+
                             Style="{StaticResource MaterialDesignFilledTextBox}" >
                             <TextBox.Text>
                                 <Binding Path="Name" UpdateSourceTrigger="LostFocus">
@@ -108,6 +108,7 @@
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
+
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -138,7 +139,9 @@
                         materialDesign:HintAssist.Hint="Email"
                         AcceptsReturn="True"
                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+
                         Style="{StaticResource MaterialDesignFilledTextBox}" >
+
                         <TextBox.Text>
                             <Binding Path="EmailID" UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
@@ -159,7 +162,7 @@
                         <TextBox.Text>
                             <Binding Path="Number" UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
-                                    <valid:NumberValidator/>
+                                    <valid:PhoneValidator/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -170,7 +173,7 @@
                         Content="SignUp"
                         VerticalAlignment="Bottom"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        
                         Click="SignUpBtn_Click"
                     />
                     <Grid x:Name="otpGrid"
@@ -210,7 +213,7 @@
                             Content="ReSend"
                             VerticalAlignment="center"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            
                             Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
                             Click="ResendOTPBtn_Click" 
                             />
@@ -221,7 +224,7 @@
                             VerticalAlignment="center"
                             materialDesign:ButtonAssist.CornerRadius="10"
                             Style="{StaticResource MaterialDesignRaisedLightButton}"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            
                             Click="VerifyOTPBtn_Click"
                             />
                     </Grid>

@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    public class Comment
+    public class Order_Stuffs
     {
         [Key, Required]
         public int Id { get; set; }
         [Required]
-        public virtual User Users { get; set; }
+        public long Price { get; set; }
         [Required]
-        public string Details { get; set; }
+        public int Quantity { get; set; }
         [Required]
-        public virtual Stuff Stuff { get; set; }
-        public string Answer { get; set; }
-        public bool IsEdited { get; set; }
-        public DateTime Date { get; set; }
+        public virtual Stuff stuff { get; set; }
+        [Required]
+        public virtual Order order { get; set; }
     }
 }

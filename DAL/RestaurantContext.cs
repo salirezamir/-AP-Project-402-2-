@@ -16,9 +16,11 @@ namespace Restaurant_Manager.DAL
         public DbSet<Stuff> Stuffs { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Ratings { get; set; }
-        public DbSet<Complaint> Complaints { get; set; }
-
-
+        public DbSet<RestaurantComplaint> RestaurantComplaints { get; set; }
+        public DbSet<StuffComplaint> StuffComplaints { get; set; }
+        public DbSet<OrderComplaint> OrderComplaints { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Order_Stuffs> Order_Stuffs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

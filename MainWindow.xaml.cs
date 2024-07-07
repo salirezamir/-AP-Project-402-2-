@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using Restaurant_Manager.DAL;
 using Restaurant_Manager.Models;
+using Restaurant_Manager.CustomerPannle;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
@@ -32,6 +33,7 @@ namespace Restaurant_Manager
                 OnPropertyChange(nameof(_emailID));
             }
         }
+
         private string _name;
         public string Name
         {
@@ -42,6 +44,7 @@ namespace Restaurant_Manager
                 OnPropertyChange(nameof(_name));
             }
         }
+
         private string _number;
         public string Number
         {
@@ -82,11 +85,11 @@ namespace Restaurant_Manager
                 return Convert.ToHexString(hashBytes);
             }
         }
-        public static void SendMessage()
+        public static void SendMessage(string email)
         {
             MimeMessage mimeMessage = new MimeMessage();
             mimeMessage.From.Add(new MailboxAddress("salirezamir", "salirezamir@yandex.com"));
-            mimeMessage.To.Add(new MailboxAddress("DEV TEST OTP", "mirabedini.alireza@gmail.com"));
+            mimeMessage.To.Add(new MailboxAddress("DEV TEST OTP", email));
             mimeMessage.Subject = "DEV TEST OTP";
             mimeMessage.Body = new TextPart("plain")
             {
@@ -109,7 +112,6 @@ namespace Restaurant_Manager
             try
             {
                 _context.Database.EnsureCreated();
-
             }
             catch (System.Exception ex)
             {
@@ -136,13 +138,30 @@ namespace Restaurant_Manager
                     adminWindow.Show();
                     this.Close();
                 }
-                // do Data Pass
+
+                else if (user.Type == User.Types.Customer)
+                {
+                    CustomerPanel customerPanel = new CustomerPanel(user);
+                    customerPanel.Show();
+                    this.Close();
+                }
+
+                else if (user.Type == User.Types.Restaurant)
+                {
+                    Restaurant restaurant = _context.Users.Where(x => x.Id == user.Id).Select(x => x.Restaurant).FirstOrDefault();
+                    RestaurantWindow resturantWindow = new RestaurantWindow(restaurant, user);
+                    resturantWindow.Show();
+                    this.Close();
+                }
+
+
             }
             else
             {
                 MessageBox.Show("Invalid Username or Password");
             }
         }
+
 
         private void SignUpBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -159,7 +178,7 @@ namespace Restaurant_Manager
             }
             Random random = new Random();
             otp = random.Next(10000, 99999);
-            //SendMessage();
+            SendMessage(emailTx.Text);
             MessageBox.Show(otp.ToString());
             MessageBox.Show("Email Sent");
             otpGrid.Visibility = Visibility.Visible;
@@ -202,7 +221,7 @@ namespace Restaurant_Manager
         {
             Random random = new Random();
             otp = random.Next(10000, 99999);
-            SendMessage();
+            SendMessage(emailTx.Text);
             MessageBox.Show("Email Sent");
         }
 

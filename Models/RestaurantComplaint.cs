@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant_Manager.Models
 {
-    public class Complaint
+    public class RestaurantComplaint
     {
         public enum CStatus
         {
@@ -17,15 +17,16 @@ namespace Restaurant_Manager.Models
         [Key, Required]
         public int Id { get; set; }
         [Required]
-        public string Details { get; set; }
+        public string Detail { get; set; }
         [Required]
         public string Title { get; set; }
         public string? Answer { get; set; }
         [Required]
-        public virtual User Users { get; set; }
+        public virtual User User { get; set; }
         [Required]
-        public virtual Restaurant? Restaurant { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
         [Required]
         public CStatus Status { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
