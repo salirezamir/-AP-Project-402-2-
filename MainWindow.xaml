@@ -39,16 +39,13 @@
                         Height="50"
                         x:Name="passwordInTx"
                         materialDesign:HintAssist.Hint="Password"
-                        Style="{StaticResource MaterialDesignFilledPasswordBox}"
-                    />
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
                     <Button
                         x:Name="LoginBtn"
                         Grid.Row="3" Grid.Column="1"
                         Content="LogIn"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        
-                        Click="LoginBtn_Click" 
-                    />
+                        Click="LoginBtn_Click" />
                 </Grid>
             </TabItem>
             <TabItem Header="SignUp">
@@ -205,7 +202,7 @@
                             <TextBox.Text>
                                 <Binding Path="Number" UpdateSourceTrigger="LostFocus">
                                     <Binding.ValidationRules>
-                                        <valid:PhoneValidator/>
+                                        <valid:NumberValidator/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
