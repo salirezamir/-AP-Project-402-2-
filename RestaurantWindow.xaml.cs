@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,6 +45,13 @@ namespace Restaurant_Manager
         public string OrderDate { get; set; }
         public string TotalAmount { get; set; }
         public string Type { get; set; }
+    }
+    public class CommentView
+    {
+        public string Id { get; set; }
+        public string Answer { get; set; }
+        public string Name { get; set; }
+        public string Details { get; set; }
     }
     // Stuff View Same As DB
     public class RestVM : INotifyPropertyChanged
@@ -203,6 +211,13 @@ namespace Restaurant_Manager
                         CommentDg.Visibility = Visibility.Visible;
                         CommentDg.ItemsSource = _context.Comments
                             .Where(x => x.Stuff == stuff)
+                            .Select(x => new CommentView
+                            {
+                                Id = x.Id.ToString(),
+                                Answer = x.Answer,
+                                Name = x.Users.Name,
+                                Details = x.Details
+                            })
                             .ToList();
                     }
                     return;
@@ -316,6 +331,9 @@ namespace Restaurant_Manager
             MaterialTx.Clear();
             QuantityTx.Clear();
             PriceTx.Clear();
+            AnswerBtn.Visibility = Visibility.Hidden;
+            AnswerTx.Visibility = Visibility.Hidden;
+            CommentDg.Visibility = Visibility.Hidden;
             RemoveBtn.Visibility = Visibility.Hidden;
             TypeCb.SelectedIndex = -1;
             AddOrEditBtn.Content = "Add";
@@ -549,17 +567,27 @@ namespace Restaurant_Manager
             {
                 if (CommentDg.SelectedIndex == -1 || CommentDg.SelectedIndex == CommentDg.Items.Count)
                     return;
-                AnswerTx.Text = (CommentDg.SelectedItem as Comment).Answer;
+                AnswerTx.Text = (CommentDg.SelectedItem as CommentView).Answer;
                 AnswerBtn.IsEnabled = true;
             }
         }
 
         private void AnswerBtn_Click(object sender, RoutedEventArgs e)
         {
-            Comment comment = _context.Comments.Where(x => x.Id == (CommentDg.SelectedItem as Comment).Id).First();
+            Comment comment = _context.Comments.Where(x => x.Id.ToString() == (CommentDg.SelectedItem as CommentView).Id).First();
             comment.Answer = AnswerTx.Text;
             _context.SaveChanges();
             AnswerTx.Clear();
+            CommentDg.ItemsSource = _context.Comments
+                            .Where(x => x.Stuff.Id == id)
+                            .Select(x => new CommentView
+                            {
+                                Id = x.Id.ToString(),
+                                Answer = x.Answer,
+                                Name = x.Users.Name,
+                                Details = x.Details
+                            })
+                            .ToList();
             CommentDg.SelectedIndex = -1;
             AnswerBtn.IsEnabled = false;
         }
