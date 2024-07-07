@@ -46,7 +46,6 @@ namespace Restaurant_Manager.CustomerPannle
             {
                 var comments = context.Comments
                     .Where(c => c.Stuff.Id == stuff.Id)
-                    .Include(c => c.Replies)
                     .Include(c => c.Users)
                     .ToList();
 
@@ -72,10 +71,10 @@ namespace Restaurant_Manager.CustomerPannle
         {
             using (var context = new RestaurantContext())
             {
-                var comment = context.Comments.Include(c => c.Replies).FirstOrDefault(c => c.Id == commentId);
+                var comment = context.Comments.FirstOrDefault(c => c.Id == commentId);
                 if (comment != null)
                 {
-                    context.Comments.RemoveRange(comment.Replies);
+                   
                     context.Comments.Remove(comment);
                     context.SaveChanges();
                 }
@@ -147,7 +146,7 @@ namespace Restaurant_Manager.CustomerPannle
                         Users = _currentUser,
                         Stuff = parentComment.Stuff
                     };
-                    parentComment.Replies.Add(reply);
+                    
                     context.SaveChanges();
                 }
             }

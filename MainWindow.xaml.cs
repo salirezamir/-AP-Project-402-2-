@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using Restaurant_Manager.DAL;
 using Restaurant_Manager.Models;
+using Restaurant_Manager.CustomerPannle;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
