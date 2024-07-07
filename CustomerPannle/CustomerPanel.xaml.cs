@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.ComponentModel.DataAnnotations;
 using Restaurant_Manager.CustomerPannle;
 using System.Xml.Linq;
+using System.Windows.Input;
 
 namespace Restaurant_Manager.CustomerPannle
 {
@@ -144,11 +145,11 @@ namespace Restaurant_Manager.CustomerPannle
                 }
                 else if (receptionType == "Delivery")
                 {
-                    filteredRestaurants = filteredRestaurants.Where(r => r.Delivery);
+                    filteredRestaurants = filteredRestaurants.Where(r => r.Delivery && !r.DineIn);
                 }
                 else if (receptionType == "Dine-In")
                 {
-                    filteredRestaurants = filteredRestaurants.Where(r => r.DineIn);
+                    filteredRestaurants = filteredRestaurants.Where(r => r.DineIn && !r.Delivery);
                 }
             }
             if (isValidScore)
@@ -159,15 +160,15 @@ namespace Restaurant_Manager.CustomerPannle
             RestaurantListView.ItemsSource = filteredRestaurants.ToList();
         }
 
-        private void RestaurantListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void RestaurantListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (RestaurantListView.SelectedItem is Restaurant selectedRestaurant)
             {
                 var restaurantDetail = new RestaurantPanelForCustomer(selectedRestaurant, _currentUser);
-                restaurantDetail.Show();
-                this.Close();
+                restaurantDetail.ShowDialog();
             }
         }
+
 
         private void LstOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
