@@ -4,6 +4,7 @@ using System.Linq;
 using Restaurant_Manager.DAL;
 using System;
 using System.Data.Entity;
+using System.Windows.Input;
 
 namespace Restaurant_Manager.CustomerPannle
 {
@@ -28,11 +29,16 @@ namespace Restaurant_Manager.CustomerPannle
                     .Where(s => s.Resturant.Id == _restaurant.Id)
                     .ToList();
 
-                MenuListView.ItemsSource = menuItems;
+                var groupedMenuItems = menuItems.GroupBy(m => m.fType)
+                    .Select(g => new { Type = g.Key, Items = g.ToList() })
+                    .ToList();
+
+                MenuListView.ItemsSource = groupedMenuItems;
             }
         }
 
-        private void MenuListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+        private void MenuListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (MenuListView.SelectedItem is Stuff selectedStuff)
             {
@@ -50,6 +56,46 @@ namespace Restaurant_Manager.CustomerPannle
                     .ToList();
 
                 CommentTreeView.ItemsSource = comments;
+            }
+        }
+
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (MenuListView.SelectedItem is Stuff selectedStuff && !string.IsNullOrEmpty(NewCommentTextBox.Text))
+            {
+                using (var context = new RestaurantContext())
+                {
+                    var newComment = new Comment
+                    {
+                        Details = NewCommentTextBox.Text,
+                        Date = DateTime.Now,
+                        IsEdited = false,
+                        Users = _currentUser,
+                        Stuff = selectedStuff
+                    };
+
+                    context.Comments.Add(newComment);
+                    context.SaveChanges();
+
+                    LoadComments(selectedStuff); // Refresh comments
+                }
+            }
+        }
+
+        private void EditComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (CommentTreeView.SelectedItem is Comment selectedComment && selectedComment.Users.Id == _currentUser.Id)
+            {
+                var newDetails = "New comment details"; // Get from user input
+                EditComment(selectedComment.Id, newDetails);
+            }
+        }
+
+        private void DeleteComment_Click(object sender, RoutedEventArgs e)
+        {
+            if (CommentTreeView.SelectedItem is Comment selectedComment && selectedComment.Users.Id == _currentUser.Id)
+            {
+                DeleteComment(selectedComment.Id);
             }
         }
 
@@ -71,21 +117,20 @@ namespace Restaurant_Manager.CustomerPannle
         {
             using (var context = new RestaurantContext())
             {
-                var comment = context.Comments.FirstOrDefault(c => c.Id == commentId);
+                var comment = context.Comments.Find(commentId);
                 if (comment != null)
                 {
-                   
                     context.Comments.Remove(comment);
                     context.SaveChanges();
                 }
             }
         }
 
-        private void CommentTreeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+        private void CommentTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (CommentTreeView.SelectedItem is Comment selectedComment)
             {
-                // Show comment details or options
                 var dialogResult = MessageBox.Show($"Selected Comment: {selectedComment.Details}\n\n" +
                                                    $"Date: {selectedComment.Date}\n" +
                                                    $"Edited: {(selectedComment.IsEdited ? "Yes" : "No")}",
@@ -103,29 +148,10 @@ namespace Restaurant_Manager.CustomerPannle
             }
         }
 
-        private void EditComment_Click(object sender, RoutedEventArgs e)
-        {
-            if (CommentTreeView.SelectedItem is Comment selectedComment && selectedComment.Users.Id == _currentUser.Id)
-            {
-                // Show edit dialog
-                var newDetails = "New comment details"; // Get from user input
-                EditComment(selectedComment.Id, newDetails);
-            }
-        }
-
-        private void DeleteComment_Click(object sender, RoutedEventArgs e)
-        {
-            if (CommentTreeView.SelectedItem is Comment selectedComment && selectedComment.Users.Id == _currentUser.Id)
-            {
-                DeleteComment(selectedComment.Id);
-            }
-        }
-
         private void ReplyComment_Click(object sender, RoutedEventArgs e)
         {
             if (CommentTreeView.SelectedItem is Comment selectedComment)
             {
-                // Show reply dialog
                 var replyDetails = "Reply comment details"; // Get from user input
                 AddReply(selectedComment.Id, replyDetails);
             }
@@ -138,18 +164,15 @@ namespace Restaurant_Manager.CustomerPannle
                 var parentComment = context.Comments.Find(commentId);
                 if (parentComment != null)
                 {
-                    var reply = new Comment
-                    {
-                        Details = replyDetails,
-                        Date = DateTime.Now,
-                        IsEdited = false,
-                        Users = _currentUser,
-                        Stuff = parentComment.Stuff
-                    };
-                    
+                    parentComment.Answer = replyDetails;
                     context.SaveChanges();
+
+                    // Refresh comments to show the answer
+                    LoadComments(parentComment.Stuff);
                 }
             }
         }
+
+
     }
 }
