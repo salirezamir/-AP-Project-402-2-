@@ -115,12 +115,13 @@ namespace Restaurant_Manager
             User user = new User
             {
                 Username = UsernameRsTx.Text,
-                Name = "Restaurant " + NameRsTx.Text,
+                Name = NameRsTx.Text,
                 Password = MainWindow.CreateMD5(pass.ToString()),
                 Email = EmailRsTx.Text,
                 Phone = PhoneRsTx.Text,
                 Type = User.Types.Restaurant,
-                Restaurant = restaurant
+                Restaurant = restaurant,
+                Address = AddrRsTx.Text,
             };
             _context.Users.Add(user);
             _context.SaveChanges();
@@ -181,7 +182,7 @@ namespace Restaurant_Manager
                         RName = x.Stuff.Name,
                         Status = x.Status.ToString(),
                         For = "Stuffs"
-                    }).Concat(CompList).ToList();
+                    }).ToList().Concat(CompList).ToList();
                     CompList = _context.OrderComplaints.Select(x => new CompDGVM
                     {
                         Id = x.Id,
@@ -191,9 +192,9 @@ namespace Restaurant_Manager
                         RName = x.Order.Id.ToString(),
                         Status = x.Status.ToString(),
                         For = "Order"
-                    }).Concat(CompList).ToList();
+                    }).ToList().Concat(CompList).ToList();
                     st = -1;
-                    
+                    ComplaintDg.ItemsSource = CompList;
                     UserNameCpAnTx.Clear();
                 }
                 else if (Tb.SelectedIndex == 3)
@@ -434,9 +435,24 @@ namespace Restaurant_Manager
                 MessageBox.Show("Please fill in all fields");
                 return;
             }
-            var complaint = _context.RestaurantComplaints.Where(x => x.Id == st).FirstOrDefault();
-            complaint.Answer = AnswerAnTx.Text;
-            complaint.Status = (RestaurantComplaint.CStatus)FilterCpAnCb.SelectedIndex;
+            if (rt == "Restaurant")
+            {
+                var complaint = _context.RestaurantComplaints.Where(x => x.Id == st).FirstOrDefault();
+                complaint.Status = (RestaurantComplaint.CStatus)FilterCpAnCb.SelectedIndex;
+                complaint.Answer = AnswerAnTx.Text;
+            }
+            else if (rt == "Stuffs")
+            {
+                var complaint = _context.StuffComplaints.Where(x => x.Id == st).FirstOrDefault();
+                complaint.Status = (StuffComplaint.CStatus)FilterCpAnCb.SelectedIndex;
+                complaint.Answer = AnswerAnTx.Text;
+            }
+            else if (rt == "Order")
+            {
+                var complaint = _context.OrderComplaints.Where(x => x.Id == st).FirstOrDefault();
+                complaint.Status = (OrderComplaint.CStatus)FilterCpAnCb.SelectedIndex;
+                complaint.Answer = AnswerAnTx.Text;
+            }
             _context.SaveChanges();
             UserNameCpAnTx.Clear();
             NameCpAnTx.Clear();
@@ -445,6 +461,7 @@ namespace Restaurant_Manager
             FilterCpAnCb.SelectedIndex = -1;
             AnswerAnTx.Clear();
             st = -1;
+            rt = "";
             
             MessageBox.Show("Complaint Answered");
         }

@@ -11,7 +11,68 @@
     <TabControl x:Name="Tb"
                 SelectionChanged="Tb_SelectionChanged">
         <TabItem Header="Wellcome">
-            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Text="Wellcome to Restaurant Manager"
+                           FontSize="25" FontWeight="Bold"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           x:Name="AcTxb"
+                           Text="You can Activate Reservation"
+                           FontSize="25" FontWeight="Bold"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="3" Grid.Column="1"
+                           Text="Status : " x:Name="StTxb"
+                           FontSize="25" FontWeight="Bold"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="ActivateBtn"
+                        Grid.Row="4" Grid.Column="1"
+                        Content="Activate" Click="ActivateBtn_Click"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"/>
+                <PasswordBox
+                        Grid.Row="1" Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Height="50"
+                        x:Name="passwordOldTx"
+                        materialDesign:HintAssist.Hint="OldPassword"
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+                <PasswordBox
+                        Grid.Row="2" Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Height="50"
+                        x:Name="passwordNewTx"
+                        materialDesign:HintAssist.Hint="NewPassword"
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+                <PasswordBox
+                        Grid.Row="3" Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Height="50"
+                        x:Name="passwordNewRTx"
+                        materialDesign:HintAssist.Hint="Repeat Password"
+                        Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+                <Button x:Name="PassEnaBtn"
+                        Grid.Row="4" Grid.Column="4"
+                        Content="Change Password"
+                        materialDesign:ButtonAssist.CornerRadius="10" Click="PassEnaBtn_Click"/>
+            </Grid>
         </TabItem>
         <TabItem Header="Menu">
             <Grid>
@@ -40,18 +101,25 @@
             </DataGrid>
             </Grid>
         </TabItem>
-        <TabItem Header="Edit/Remove">
+        <TabItem Header="Add Stuff">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="15"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="15"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="15"/>
                     <RowDefinition Height="50"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="90"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="275"/>
+                    <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="140"/>
                     <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="140"/>
@@ -59,18 +127,18 @@
                     <ColumnDefinition Width="140"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="NameRsTx"
-                        Grid.Row="1" Grid.Column="1"
+                        Grid.Row="1" Grid.Column="5"
                         materialDesign:HintAssist.Hint="Name"
                         VerticalAlignment="Center"
                         Style="{StaticResource MaterialDesignFilledTextBox}"/>
                 <TextBox x:Name="MaterialTx"
-                        Grid.Row="1" Grid.Column="3"
-                         Grid.ColumnSpan="3"
+                        Grid.Row="3" Grid.Column="5"
+                        Grid.ColumnSpan="3"
                         materialDesign:HintAssist.Hint="Materials"
                         VerticalAlignment="Center"
                         Style="{StaticResource MaterialDesignFilledTextBox}" />
                 <TextBox x:Name="QuantityTx"
-                        Grid.Row="3" Grid.Column="1"
+                        Grid.Row="1" Grid.Column="7"
                         materialDesign:HintAssist.Hint="Quantity"
                         VerticalAlignment="Center"
                         Style="{StaticResource MaterialDesignFilledTextBox}">
@@ -83,7 +151,7 @@
                     </TextBox.Text>
                 </TextBox>
                 <TextBox x:Name="PriceTx"
-                        Grid.Row="3" Grid.Column="3"
+                        Grid.Row="5" Grid.Column="5"
                         materialDesign:HintAssist.Hint="Price"
                         VerticalAlignment="Center"
                         Style="{StaticResource MaterialDesignFilledTextBox}">
@@ -95,7 +163,7 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <ComboBox Grid.Row="3" Grid.Column="5"
+                <ComboBox Grid.Row="5" Grid.Column="7"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           materialDesign:HintAssist.Hint="Type"
                           x:Name="TypeCb" Height="50">
@@ -104,17 +172,43 @@
                     <ComboBoxItem Content="Dessert"/>
                 </ComboBox>
                 <Button x:Name="AddOrEditBtn"
-                        Grid.Row="7" Grid.Column="5"
+                        Grid.Row="7" Grid.Column="7"
                         Content="Add" Click="AddOrEditBtn_Click"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         />
                 <Button x:Name="RemoveBtn"
-                        Grid.Row="7" Grid.Column="1"
+                        Grid.Row="7" Grid.Column="5"
                         Content="Remove" Click="RemoveBtn_Click"
-                        IsEnabled="False" Visibility="Hidden"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                        Style="{StaticResource MaterialDesignRaisedSecondaryButton}"/>
+                <DataGrid AutoGenerateColumns="False"
+                          SelectionChanged="CommentDg_SelectionChanged"
+                      x:Name="CommentDg" SelectionMode="Single"
+                      Grid.Row="1" Grid.Column="1"
+                          Grid.RowSpan="5" Grid.ColumnSpan="3">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="Answer" Binding="{Binding Answer}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}"  IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+                <Button x:Name="AnswerBtn" Content="Answer"
+                        Grid.Row="9" Grid.Column="5"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        Style="{StaticResource MaterialDesignFlatDarkBgButton}" Click="AnswerBtn_Click"
                         />
+                <TextBox x:Name="AnswerTx"
+                         Grid.Row="7" Grid.Column="1"
+                         Grid.ColumnSpan="3" Grid.RowSpan="4"
+                         materialDesign:HintAssist.Hint="Answer"
+                         VerticalAlignment="Top"
+                         Height="200"
+                         TextAlignment="Left"
+                         TextWrapping="Wrap"
+                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                         AcceptsReturn="True"/>
             </Grid>
         </TabItem>
         <TabItem Header="History">
@@ -142,6 +236,7 @@
                             Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="UName" Binding="{Binding UName}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="UserName" Binding="{Binding UserName}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="OrderDate-Time" Binding="{Binding OrderDate}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="TotalAmount" Binding="{Binding TotalAmount}" IsReadOnly="True"/>
@@ -153,7 +248,7 @@
                             Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="sId" Binding="{Binding Id}" Visibility="Hidden"/>
-                        <DataGridTextColumn Header="Stuff Name" Binding="{Binding stuff}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Stuff Name" Binding="{Binding Name}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Price" Binding="{Binding Price}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True"/>
@@ -193,9 +288,7 @@
                     Grid.Row="4" Grid.Column="3"
                     Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    
-                    ToolTip="Save to .csv" Click="SaveFilterBtn_Click"
-                >
+                    ToolTip="Save to .csv" Click="SaveFilterBtn_Click">
                     <materialDesign:PackIcon
                         Width="30"
                         Height="30"
