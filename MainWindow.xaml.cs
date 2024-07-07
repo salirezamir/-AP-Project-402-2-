@@ -84,11 +84,11 @@ namespace Restaurant_Manager
                 return Convert.ToHexString(hashBytes);
             }
         }
-        public static void SendMessage()
+        public static void SendMessage(string email)
         {
             MimeMessage mimeMessage = new MimeMessage();
             mimeMessage.From.Add(new MailboxAddress("salirezamir", "salirezamir@yandex.com"));
-            mimeMessage.To.Add(new MailboxAddress("DEV TEST OTP", "mirabedini.alireza@gmail.com"));
+            mimeMessage.To.Add(new MailboxAddress("DEV TEST OTP", email));
             mimeMessage.Subject = "DEV TEST OTP";
             mimeMessage.Body = new TextPart("plain")
             {
@@ -177,7 +177,7 @@ namespace Restaurant_Manager
             }
             Random random = new Random();
             otp = random.Next(10000, 99999);
-            //SendMessage();
+            SendMessage(emailTx.Text);
             MessageBox.Show(otp.ToString());
             MessageBox.Show("Email Sent");
             otpGrid.Visibility = Visibility.Visible;
@@ -220,7 +220,7 @@ namespace Restaurant_Manager
         {
             Random random = new Random();
             otp = random.Next(10000, 99999);
-            SendMessage();
+            SendMessage(emailTx.Text);
             MessageBox.Show("Email Sent");
         }
 
