@@ -21,6 +21,6 @@ namespace Restaurant_Manager.Models
         [Required]
         public Type OrderType { get; set; }
         [Required]
-        public int Rate { get; set; }
+        public int Rate { get; set; } = 0;
     }
 }

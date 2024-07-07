@@ -16,7 +16,9 @@ namespace Restaurant_Manager.Models
         [Required]
         public string Details { get; set; }
         [Required]
-        public Stuff Stuff { get; set; }
+        public virtual Stuff Stuff { get; set; }
         public string Answer { get; set; }
+        public bool IsEdited { get; set; }
+        public DateTime Date { get; set; }
     }
 }
