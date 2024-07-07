@@ -163,7 +163,7 @@ namespace Restaurant_Manager.CustomerPannle
         {
             if (RestaurantListView.SelectedItem is Restaurant selectedRestaurant)
             {
-                var restaurantDetail = new RestaurantPanelForCustomer(selectedRestaurant);
+                var restaurantDetail = new RestaurantPanelForCustomer(selectedRestaurant, _currentUser);
                 restaurantDetail.Show();
                 this.Close();
             }
@@ -202,5 +202,26 @@ namespace Restaurant_Manager.CustomerPannle
                 }
             }
         }
+
+        private void DeleteOrderRating_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstOrders.SelectedItem is Order selectedOrder)
+            {
+                selectedOrder.Rate = 0;
+
+                try
+                {
+                    _context.Orders.Update(selectedOrder);
+                    _context.SaveChanges();
+                    MessageBox.Show("Rating deleted successfully!");
+                    txtOrderRating.Text = string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error deleting rating: " + ex.Message);
+                }
+            }
+        }
+
     }
 }

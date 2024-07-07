@@ -1,37 +1,55 @@
 ﻿<Window x:Class="Restaurant_Manager.CustomerPannle.RestaurantPanelForCustomer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Restaurant Detail" Height="600" Width="1000">
+        Title="Restaurant Detail" Height="600" Width="1200">
     <Grid>
         <TabControl>
             <TabItem Header="Menu">
-                <Grid>
+                <Grid Width="859">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2.5*"/>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="515*"/>
+                        <ColumnDefinition Width="345*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Name="MenuListView" MouseDoubleClick="MenuListView_MouseDoubleClick" Grid.Column="0" Margin="10">
+                    <ListView Name="MenuListView" MouseDoubleClick="MenuListView_MouseDoubleClick" Grid.Column="0" Margin="-158,8,6,12" Grid.ColumnSpan="2">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
                                 <GridViewColumn Header="Type" DisplayMemberBinding="{Binding fType}" Width="100"/>
                                 <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}" Width="100"/>
                                 <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rate}" Width="100"/>
+                                <GridViewColumn Header="Ingredients" DisplayMemberBinding="{Binding Ingredients}" Width="130" />
+                                <GridViewColumn Header="Image" DisplayMemberBinding="{Binding Image}" Width="100" />
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <StackPanel Grid.Column="1" Margin="10">
+                    <StackPanel Grid.Column="2" Margin="6,6,-152,14">
                         <TextBlock Text="Comments" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <ListView Name="CommentListView">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="User" DisplayMemberBinding="{Binding Users.UserName}" Width="100"/>
-                                    <GridViewColumn Header="Comment" DisplayMemberBinding="{Binding Details}" Width="200"/>
-                                    <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating}" Width="100"/>
-                                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" Width="100"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
+                        <TreeView Name="CommentTreeView" MouseDoubleClick="CommentTreeView_MouseDoubleClick">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Replies}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Users.Username}" FontWeight="Bold" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding Details}" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding Date}" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding IsEdited, Converter={StaticResource BooleanToTextConverter}}" Margin="0,0,10,0"/>
+                                    </StackPanel>
+                                    <HierarchicalDataTemplate.ItemContainerStyle>
+                                        <Style TargetType="{x:Type TreeViewItem}">
+                                            <Setter Property="ContextMenu">
+                                                <Setter.Value>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="Edit Comment" Click="EditComment_Click"/>
+                                                        <MenuItem Header="Delete Comment" Click="DeleteComment_Click"/>
+                                                        <MenuItem Header="Reply" Click="ReplyComment_Click"/>
+                                                    </ContextMenu>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </HierarchicalDataTemplate.ItemContainerStyle>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -42,7 +60,11 @@
             </TabItem>
             <TabItem Header="Order">
                 <Grid>
-                    <TextBlock Text="Order form coming soon..." VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="179*"/>
+                        <ColumnDefinition Width="121*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Order form coming soon..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="530,0,0,0"/>
                 </Grid>
             </TabItem>
         </TabControl>

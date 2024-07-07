@@ -41,10 +41,11 @@
                         <ListView Name="RestaurantListView" MouseDoubleClick="RestaurantListView_MouseDoubleClick">
                             <ListView.View>
                                 <GridView>
-                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
-                                        <GridViewColumn Header="City" DisplayMemberBinding="{Binding City}" />
-                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
-                                        <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding AvgRate}" />
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                                    <GridViewColumn Header="City" DisplayMemberBinding="{Binding City}" />
+                                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
+                                    <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding AvgRate}" />
+                                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
