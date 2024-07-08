@@ -5,6 +5,12 @@ using Restaurant_Manager.DAL;
 using System;
 using System.Data.Entity;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using MailKit.Security;
+using MailKit;
+using MimeKit;
+using MailKit.Net.Smtp;
+using static System.Net.WebRequestMethods;
 
 namespace Restaurant_Manager.CustomerPannle
 {
@@ -12,6 +18,7 @@ namespace Restaurant_Manager.CustomerPannle
     {
         private Restaurant _restaurant;
         private User _currentUser;
+        private ObservableCollection<Stuff> cartItems = new ObservableCollection<Stuff>();
 
         public RestaurantPanelForCustomer(Restaurant restaurant, User currentUser)
         {
@@ -36,7 +43,6 @@ namespace Restaurant_Manager.CustomerPannle
                 MenuListView.ItemsSource = groupedMenuItems;
             }
         }
-
 
         private void MenuListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -126,7 +132,6 @@ namespace Restaurant_Manager.CustomerPannle
             }
         }
 
-
         private void CommentTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (CommentTreeView.SelectedItem is Comment selectedComment)
@@ -173,6 +178,73 @@ namespace Restaurant_Manager.CustomerPannle
             }
         }
 
+        private void AddToCart_Click(object sender, RoutedEventArgs e)
+        {
+            if (MenuListView.SelectedItem is Stuff selectedStuff)
+            {
+                var existingCartItem = cartItems.FirstOrDefault(item => item.Id == selectedStuff.Id);
+
+                if (existingCartItem != null)
+                {
+                    existingCartItem.Quantity++;
+                }
+                else
+                {
+                    selectedStuff.Quantity = 1;
+                    cartItems.Add(selectedStuff);
+                }
+
+                UpdateTotalPrice();
+            }
+        }
+
+        private void UpdateTotalPrice()
+        {
+            decimal totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
+            TotalPriceTextBlock.Text = totalPrice.ToString();
+        }
+
+        private void ProceedToPayment_Click(object sender, RoutedEventArgs e)
+        {
+            Random random = new Random();
+            int otp = random.Next(10000, 99999);
+            string userEmail = _currentUser.Email;
+
+            // Call SendMessage to send OTP via email
+            SendMessage(userEmail, otp);
+
+            // Display a message to the user
+            MessageBox.Show($"OTP sent to {userEmail}. Please check your email.", "OTP Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // Optionally, display the OTP for testing purposes
+            MessageBox.Show($"OTP: {otp}", "OTP for Testing", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // Show the OTP grid or perform other actions as needed
+            otpGrid.Visibility = Visibility.Visible;
+        }
+
+        public static void SendMessage(string email, int otp)
+        {
+            MimeMessage mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("salirezamir", "salirezamir@yandex.com"));
+            mimeMessage.To.Add(new MailboxAddress("DEV TEST OTP", email));
+            mimeMessage.Subject = "DEV TEST OTP";
+            mimeMessage.Body = new TextPart("plain")
+            {
+                Text = $"***DEV TEST OTP***\nOTP is : {otp}"
+            };
+
+            using (var client = new SmtpClient(new ProtocolLogger("smtp.log")))
+            {
+                client.Connect("smtp.yandex.com", 465, SecureSocketOptions.SslOnConnect);
+
+                client.Authenticate("salirezamir", "gtvmchybehgvlusz");
+
+                client.Send(mimeMessage);
+
+                client.Disconnect(true);
+            }
+        }
 
     }
 }
