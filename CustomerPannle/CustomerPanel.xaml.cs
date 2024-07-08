@@ -223,6 +223,110 @@ namespace Restaurant_Manager.CustomerPannle
                 }
             }
         }
+        private void SubmitComplaint_Click(object sender, RoutedEventArgs e)
+        {
+            string? complaintType = ((ComboBoxItem)cmbComplaintType.SelectedItem)?.Content?.ToString();
+            string title = txtComplaintTitle.Text;
+            string detail = txtComplaintDetail.Text;
 
+            if (string.IsNullOrEmpty(complaintType) || string.IsNullOrEmpty(title) || string.IsNullOrEmpty(detail))
+            {
+                MessageBox.Show("All fields are required.");
+                return;
+            }
+
+            switch (complaintType)
+            {
+                case "Restaurant":
+                    var restaurant = _context.Restaurants.FirstOrDefault();
+                    if (restaurant != null)
+                    {
+                        var restaurantComplaint = new RestaurantComplaint
+                        {
+                            Title = title,
+                            Detail = detail,
+                            User = _currentUser,
+                            Restaurant = restaurant,
+                            Status = RestaurantComplaint.CStatus.Pending,
+                            CreatedAt = DateTime.Now
+                        };
+                        _context.RestaurantComplaints.Add(restaurantComplaint);
+                    }
+                    break;
+                case "Stuff":
+                    var stuff = _context.Stuffs.FirstOrDefault();
+                    if (stuff != null)
+                    {
+                        var stuffComplaint = new StuffComplaint
+                        {
+                            Title = title,
+                            Detail = detail,
+                            User = _currentUser,
+                            Stuff = stuff,
+                            Status = StuffComplaint.CStatus.Pending,
+                            CreatedAt = DateTime.Now
+                        };
+                        _context.StuffComplaints.Add(stuffComplaint);
+                    }
+                    break;
+                case "Order":
+                    var order = _context.Orders.FirstOrDefault(o => o.User.Id == _currentUser.Id);
+                    if (order != null)
+                    {
+                        var orderComplaint = new OrderComplaint
+                        {
+                            Title = title,
+                            Detail = detail,
+                            Order = order,
+                            Status = OrderComplaint.CStatus.Pending,
+                            CreatedAt = DateTime.Now
+                        };
+                        _context.OrderComplaints.Add(orderComplaint);
+                    }
+                    break;
+                default:
+                    MessageBox.Show("Invalid complaint type.");
+                    return;
+            }
+
+            try
+            {
+                _context.SaveChanges();
+                LoadComplaints();
+                MessageBox.Show("Complaint submitted successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error submitting complaint: " + ex.Message);
+            }
+        }
+
+
+        private void LstRestaurantComplaints_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstRestaurantComplaints.SelectedItem is RestaurantComplaint selectedComplaint)
+            {
+                txtComplaintTitle.Text = selectedComplaint.Title;
+                txtComplaintDetail.Text = selectedComplaint.Detail;
+            }
+        }
+
+        private void LstStuffComplaints_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstStuffComplaints.SelectedItem is StuffComplaint selectedComplaint)
+            {
+                txtComplaintTitle.Text = selectedComplaint.Title;
+                txtComplaintDetail.Text = selectedComplaint.Detail;
+            }
+        }
+
+        private void LstOrderComplaints_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstOrderComplaints.SelectedItem is OrderComplaint selectedComplaint)
+            {
+                txtComplaintTitle.Text = selectedComplaint.Title;
+                txtComplaintDetail.Text = selectedComplaint.Detail;
+            }
+        }
     }
 }
