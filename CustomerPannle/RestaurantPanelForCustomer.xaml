@@ -69,7 +69,7 @@
                     <TextBox x:Name="txtReserveDate" Margin="0,10" materialDesign:HintAssist.Hint="Reservation Date"/>
                     <TextBox x:Name="txtReserveTime" Margin="0,10" materialDesign:HintAssist.Hint="Reservation Time"/>
                     <TextBox x:Name="txtNumOfPeople" Margin="0,10" materialDesign:HintAssist.Hint="Number of People"/>
-                    <Button Content="Reserve" Click="Reserve_Click"/>
+                    <!--Button Content="Reserve" Click="Reserve_Click"/-->
                 </StackPanel>
             </TabItem>
             <TabItem Header="Order">
