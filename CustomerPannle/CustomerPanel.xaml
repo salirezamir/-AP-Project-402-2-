@@ -57,23 +57,36 @@
             <TabItem Header="Orders">
                 <StackPanel Margin="20">
                     <ListBox x:Name="lstOrders" Margin="20" DisplayMemberPath="OrderDate" SelectionChanged="LstOrders_SelectionChanged"/>
+                    <TextBox x:Name="txtOrderComment" Margin="0,10" materialDesign:HintAssist.Hint="Comment"/>
                     <TextBox x:Name="txtOrderRating" Margin="0,10" materialDesign:HintAssist.Hint="Rating (1-5)"/>
                     <Button Content="Submit Rating" Click="SubmitOrderRating_Click"/>
-                    <Button Content="Delete Rating" Click="DeleteOrderRating_Click"/>
+                    <Button Content="Delete Rating" Click="DeleteOrderRating_Click" RenderTransformOrigin="-1.326,-7.561"/>
                 </StackPanel>
             </TabItem>
 
             <!-- Complaints Tab -->
             <TabItem Header="Complaints">
                 <StackPanel Margin="20">
+                    <TextBlock Text="Submit a Complaint" FontWeight="Bold"/>
+                    <ComboBox x:Name="cmbComplaintType" Margin="0,10" materialDesign:HintAssist.Hint="Complaint Type">
+                        <ComboBoxItem Content="Restaurant"/>
+                        <ComboBoxItem Content="Stuff"/>
+                        <ComboBoxItem Content="Order"/>
+                    </ComboBox>
+                    <TextBox x:Name="txtComplaintTitle" Margin="0,10" materialDesign:HintAssist.Hint="Title"/>
+                    <TextBox x:Name="txtComplaintDetail" Margin="0,10" materialDesign:HintAssist.Hint="Detail" TextWrapping="Wrap" AcceptsReturn="True"/>
+                    <Button Content="Submit Complaint" Click="SubmitComplaint_Click"/>
+
+                    <TextBlock Text="Previous Complaints" FontWeight="Bold" Margin="20,0,0,0"/>
                     <TextBlock Text="Restaurant Complaints"/>
-                    <ListBox x:Name="lstRestaurantComplaints" Margin="10"/>
-                    <TextBlock Text="Staff Complaints"/>
-                    <ListBox x:Name="lstStuffComplaints" Margin="10"/>
+                    <ListBox x:Name="lstRestaurantComplaints" Margin="10" DisplayMemberPath="Title" SelectionChanged="LstRestaurantComplaints_SelectionChanged"/>
+                    <TextBlock Text="Stuff Complaints"/>
+                    <ListBox x:Name="lstStuffComplaints" Margin="10" DisplayMemberPath="Title" SelectionChanged="LstStuffComplaints_SelectionChanged"/>
                     <TextBlock Text="Order Complaints"/>
-                    <ListBox x:Name="lstOrderComplaints" Margin="10"/>
+                    <ListBox x:Name="lstOrderComplaints" Margin="10" DisplayMemberPath="Title" SelectionChanged="LstOrderComplaints_SelectionChanged"/>
                 </StackPanel>
             </TabItem>
+
         </TabControl>
     </Grid>
 </Window>
