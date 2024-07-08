@@ -314,6 +314,7 @@ namespace Restaurant_Manager
                 stuff.Quantity = int.Parse(QuantityTx.Text);
                 stuff.Price = long.Parse(PriceTx.Text);
                 stuff.fType = (Stuff.SType)TypeCb.SelectedIndex;
+                _context.SaveChanges();
             }
             else
             {
@@ -324,9 +325,12 @@ namespace Restaurant_Manager
                 stuff.Price = long.Parse(PriceTx.Text);
                 stuff.fType = (Stuff.SType)TypeCb.SelectedIndex;
                 stuff.Available = true;
+                stuff.Resturant = _context.Restaurants.Where(x => x.Id == _restaurant.Id).First();
+                stuff.PicFileId = 0;
+                stuff.Rate = 0;
                 _context.Stuffs.Add(stuff);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
             NameRsTx.Clear();
             MaterialTx.Clear();
             QuantityTx.Clear();
